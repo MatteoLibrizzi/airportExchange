@@ -5,52 +5,81 @@ import {
 } from '@aws-cdk/aws-apigatewayv2-alpha'
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha'
 import * as cdk from 'aws-cdk-lib'
+import * as iam from 'aws-cdk-lib/aws-iam'
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as s3 from 'aws-cdk-lib/aws-s3'
 import { Construct } from 'constructs'
+import path = require('path')
 
 export class AirportExchangeBackendStack extends cdk.Stack {
+	apiHandlerLambda: lambda.IFunction
+	userImagesBucket: cdk.aws_s3.Bucket
+	lambdaLayerNodeJSS3SignedURLGenerator: lambda.ILayerVersion
+
+	initLambdaLayers = () => {
+		this.lambdaLayerNodeJSS3SignedURLGenerator = new lambda.LayerVersion(
+			this,
+			'lambda-Layer-NodeJS-S3-SignedURL-Generator',
+			{
+				removalPolicy: cdk.RemovalPolicy.RETAIN,
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, 'lambdaLayers')
+				),
+				compatibleArchitectures: [
+					lambda.Architecture.X86_64,
+					lambda.Architecture.ARM_64,
+				],
+			}
+		)
+	}
+
+	createUserImagesS3Bucket = () => {
+		const userImagesBucket = new s3.Bucket(this, 'userImagesBucket', {
+			blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+		})
+
+		this.userImagesBucket = userImagesBucket
+	}
+
 	createLambdaAPIHandler = () => {
-		const apiHandlerRole = new Role(this, 'apiHandlerRole', {
+		const apiHandlerLambdaRole = new Role(this, 'apiHandlerRole', {
 			assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
 			roleName: 'LambdaAPIHandlerRole',
 		})
 
-		/*
-    create policies to assign to the role
 		const s3PolicyStatement = new iam.PolicyStatement({
 			effect: iam.Effect.ALLOW,
-			actions: ['s3:ListBucket', 's3:GetObject'],
+			actions: ['s3:*'],
 			resources: [
-				`arn:aws:s3:::${postsS3Bucket.bucketName}`,
-				`arn:aws:s3:::${postsS3Bucket.bucketName}/*`,
-				`arn:aws:s3:::${imagesS3Bucket.bucketName}`,
-				`arn:aws:s3:::${imagesS3Bucket.bucketName}/*`,
+				`arn:aws:s3:::${this.userImagesBucket.bucketName}`,
+				`arn:aws:s3:::${this.userImagesBucket.bucketName}/*`,
 			],
 		})
-    postGetterLambdaRole.addToPolicy(s3PolicyStatement)
+		apiHandlerLambdaRole.addToPolicy(s3PolicyStatement)
 
-    */
 		// assign basic role too
-		apiHandlerRole.addManagedPolicy(
+		apiHandlerLambdaRole.addManagedPolicy(
 			ManagedPolicy.fromAwsManagedPolicyName(
 				'service-role/AWSLambdaBasicExecutionRole'
 			)
 		)
 
-		const postsGetterLambda = new lambda.Function(this, 'apiHandlerLambda', {
+		const apiHandlerLambda = new lambda.Function(this, 'apiHandlerLambda', {
 			runtime: lambda.Runtime.NODEJS_18_X,
 			handler: 'index.handler',
 			code: lambda.Code.fromAsset('build/lib/apiHandlerLambda'),
-			environment: {},
-			role: apiHandlerRole,
-			layers: [],
+			environment: {
+				USER_IMAGES_BUCKET_NAME: this.userImagesBucket.bucketName,
+			},
+			role: apiHandlerLambdaRole,
+			layers: [this.lambdaLayerNodeJSS3SignedURLGenerator],
 		})
 
-		return postsGetterLambda
+		this.apiHandlerLambda = apiHandlerLambda
 	}
 
-	createAPIGateway = (apiHandlerLambda: lambda.IFunction) => {
+	createAPIGateway = () => {
 		const httpAPI = new HttpApi(this, 'airportExchangeAPI', {
 			description: 'PUBLIC api endpoint for the website',
 			corsPreflight: {
@@ -72,7 +101,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 			methods: [HttpMethod.POST],
 			integration: new HttpLambdaIntegration(
 				'lambda_intergration',
-				apiHandlerLambda
+				this.apiHandlerLambda
 			),
 		})
 	}
@@ -80,7 +109,9 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props)
 
-    const apiHandlerLambda = this.createLambdaAPIHandler()
-    this.createAPIGateway(apiHandlerLambda)
+		this.initLambdaLayers()
+		this.createUserImagesS3Bucket()
+		this.createLambdaAPIHandler()
+		this.createAPIGateway()
 	}
 }
