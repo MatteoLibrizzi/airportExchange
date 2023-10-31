@@ -1,14 +1,3 @@
-# Welcome to your CDK TypeScript project
+# Backend
 
-This is a blank project for CDK development with TypeScript.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+Using AWS. Replace with your account number in ```bin/airport_exchange_backend.ts```. Deploy with npm run buildNDeploy
