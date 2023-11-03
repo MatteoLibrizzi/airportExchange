@@ -1,17 +1,35 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as AirportExchangeBackend from '../lib/airport_exchange_backend-stack';
+import * as cdk from 'aws-cdk-lib'
+import { Match, Template } from 'aws-cdk-lib/assertions'
+import * as AirportExchangeBackend from '../lib/airport_exchange_backend-stack'
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/airport_exchange_backend-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new AirportExchangeBackend.AirportExchangeBackendStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+test('API handler lambda was created', () => {
+	const app = new cdk.App()
+	const stack = new AirportExchangeBackend.AirportExchangeBackendStack(
+		app,
+		'MyTestStack'
+	)
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
-});
+	const template = Template.fromStack(stack)
+
+	template.hasResourceProperties('AWS::Lambda::Function', {
+		Handler: 'index.handler',
+		Runtime: 'nodejs18.x',
+	})
+})
+
+test('s3 bucket for user images was created', () => {
+	const app = new cdk.App()
+	const stack = new AirportExchangeBackend.AirportExchangeBackendStack(
+		app,
+		'MyTestStack'
+	)
+
+	const template = Template.fromStack(stack)
+
+	template.hasResourceProperties(
+		'AWS::S3::Bucket',
+		Match.objectLike({
+			BucketName: 'userimagesbucket-airportexchange',
+		})
+	)
+})

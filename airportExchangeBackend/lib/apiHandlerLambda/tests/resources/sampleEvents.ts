@@ -1,0 +1,35 @@
+export const expectedEventType = 'exampleType'
+export const expectedEventObject = JSON.stringify({'a':'b'})
+export const eventWithExampleTypeAndExampleObject = {
+	version: '2.0',
+	routeKey: 'POST /test',
+	rawPath: '/test',
+	rawQueryString: '',
+	headers: {
+		accept: '*/*',
+		'accept-encoding': 'gzip, deflate, br',
+		'cache-control': 'no-cache',
+		'content-length': '53',
+		'content-type': 'application/json',
+		host: 'ru75dbvc9d.execute-api.eu-west-1.amazonaws.com',
+		'postman-token': '1cec95f8-1dad-4c91-88ad-509b625619fe',
+		'user-agent': 'PostmanRuntime/7.33.0',
+		'x-amzn-trace-id': 'Root=1-6545081a-0e89ac981926b82c6d0b89e5',
+		'x-forwarded-for': '202.79.25.37',
+		'x-forwarded-port': '443',
+		'x-forwarded-proto': 'https',
+	},
+	requestContext: {
+		accountId: '571119100070',
+		apiId: 'ru75dbvc9d',
+		domainName: 'ru75dbvc9d.execute-api.eu-west-1.amazonaws.com',
+		domainPrefix: 'ru75dbvc9d',
+		requestId: 'N040LhWJjoEEJew=',
+		routeKey: 'POST /test',
+		stage: '$default',
+		time: '03/Nov/2023:14:47:54 +0000',
+		timeEpoch: 1699022874450,
+	},
+	body: `{"eventType": ${JSON.stringify(expectedEventType)},"eventObject":${JSON.stringify(expectedEventObject)}}`,
+	isBase64Encoded: false,
+}

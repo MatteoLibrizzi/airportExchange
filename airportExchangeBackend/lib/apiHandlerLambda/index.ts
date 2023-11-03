@@ -4,6 +4,7 @@ import { REGION, USER_IMAGES_BUCKET_NAME } from './constants'
 import { getEventObject, getEventType } from './utils'
 
 exports.handler = async function (event: any) {
+	console.log({event})
 	const eventType = getEventType(event)
 
 	console.log({ eventType })

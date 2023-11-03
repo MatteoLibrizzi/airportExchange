@@ -37,6 +37,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 	createUserImagesS3Bucket = () => {
 		const userImagesBucket = new s3.Bucket(this, 'userImagesBucket', {
 			blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+			bucketName: 'userimagesbucket-airportexchange'
 		})
 
 		this.userImagesBucket = userImagesBucket
