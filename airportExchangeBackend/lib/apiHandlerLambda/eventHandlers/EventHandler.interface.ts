@@ -1,5 +1,6 @@
-import { EventResponse } from './EventResponse.interface'
+import { EventObject } from './EventTypes/Event.interface'
+import { EventResponse } from './ResponseTypes/EventResponse.interface'
 
-export interface EventHandler<EventType> {
-	handleEvent: (input: EventType) => EventResponse<EventType>
+export interface EventHandler<T extends EventObject, E extends EventResponse> {
+	handleEvent: (input: T) => E
 }

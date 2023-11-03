@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "buildNDeploy": "cd lib/apiHandlerLambda/ && jest && cd ../.. && tsc && cdk deploy"
+    "buildNDeploy": "jest && tsc && cdk deploy"
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",

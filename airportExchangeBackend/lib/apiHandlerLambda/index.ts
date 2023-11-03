@@ -1,26 +1,40 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { REGION, USER_IMAGES_BUCKET_NAME } from './constants'
+import { EventHandlerGetSignedUrl } from './eventHandlers/EventHandlerGetSignedUrl'
+import { EventType } from './eventHandlers/EventTypes/Event.interface'
 import { getEventObject, getEventType } from './utils'
 
 exports.handler = async function (event: any) {
-	console.log({event})
-	const eventType = getEventType(event)
+	let eventHandler
+	let response
+	let eventObject
+	try {
+		const eventType = getEventType(event)
 
-	console.log({ eventType })
+		eventObject = getEventObject(event)
 
-    // TODO verify that this getEventObject works
-    // TODO look into developing tests for the lambda, so you don't have to deploy every fucking change
-	const eventObject = getEventObject(event)
+		switch (eventType) {
+			case EventType.GetUploadSignedUrl:
+				eventHandler = new EventHandlerGetSignedUrl()
+				break
 
-	console.log({ eventObject })
+			default:
+				throw new Error('No event handler found')
+		}
+	} catch (e) {
+		console.error('Error during parsing of the event', e)
+	}
 
-	const client = new S3Client({ region: REGION })
-	const command = new PutObjectCommand({
-		Bucket: USER_IMAGES_BUCKET_NAME,
-		Key: 'aa',
-	})
-	const url = await getSignedUrl(client, command, { expiresIn: 3600 })
+	try {
+		if (!eventHandler) {
+			throw new Error()
+		}
+		response = await eventHandler.handleEvent(eventObject)
 
-	return url
+		if (!response) {
+			throw new Error()
+		}
+	} catch (e) {
+		console.error('Error during the handling of the event', e)
+	}
+
+	return response
 }
