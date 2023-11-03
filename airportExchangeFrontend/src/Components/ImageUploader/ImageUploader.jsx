@@ -1,15 +1,29 @@
+import axios from 'axios'
 import React from 'react'
-import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
+import 'react-dropzone-uploader/dist/styles.css'
 
 const ImageUploader = (props) => {
 	const uploadURL = props.uploadURL
 
-	//TODO mock api service to get signed url to S3, then use tutorial to upload to s3 https://react-dropzone-uploader.js.org/docs/s3
-	const getUploadParams = ({ file, meta }) => {
-		const body = new FormData()
-		body.append('fileField', file)
-		return { url: uploadURL, body }
+	//TODO https://react-dropzone-uploader.js.org/docs/s3
+	// prettify code, find a way to prevent ddos
+	// handle frontend when image is uploaded (store name, show image ecc)
+	const getUploadParams = async ({ meta: {name}, file }) => {
+		const response = await axios.post(
+			'https://ru75dbvc9d.execute-api.eu-west-1.amazonaws.com/api',
+			{
+				eventType: 'getUploadSignedUrl',
+				eventObject: '{"objectKey": "exampleKey","method":"put"}',
+			},
+			{ headers: { 'Content-Type': 'application/json' } }
+		)
+		console.log(response)
+		const url = response.data.signedUrl
+
+		console.log({url})
+
+		return { url, method:'PUT', body: file }
 	}
 	return (
 		<Dropzone
@@ -17,8 +31,9 @@ const ImageUploader = (props) => {
 			onChangeStatus={({ meta, file }, status) => {
 				console.log(status, meta, file)
 			}}
-			onSubmit={(files) => {
+			onSubmit={(files, allFiles) => {
 				console.log(files.map((f) => f.meta))
+				allFiles.forEach((f) => f.remove())
 			}}
 			accept='image/*'
 		/>

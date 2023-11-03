@@ -37,7 +37,18 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 	createUserImagesS3Bucket = () => {
 		const userImagesBucket = new s3.Bucket(this, 'userImagesBucket', {
 			blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
-			bucketName: 'userimagesbucket-airportexchange'
+			bucketName: 'userimagesbucket-airportexchange',
+			cors: [
+				{
+					allowedMethods: [
+						s3.HttpMethods.GET,
+						s3.HttpMethods.POST,
+						s3.HttpMethods.PUT,
+					],
+					allowedOrigins: ['http://localhost:3000'],
+					allowedHeaders: ['*'],
+				},
+			],
 		})
 
 		this.userImagesBucket = userImagesBucket
