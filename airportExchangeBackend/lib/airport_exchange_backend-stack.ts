@@ -98,7 +98,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 		})
 
 		httpAPI.addRoutes({
-			path: '/test',
+			path: '/api',
 			methods: [HttpMethod.POST],
 			integration: new HttpLambdaIntegration(
 				'lambda_intergration',
