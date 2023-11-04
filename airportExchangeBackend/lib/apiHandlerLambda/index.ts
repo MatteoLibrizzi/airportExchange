@@ -12,7 +12,7 @@ exports.handler = async function (event: any) {
 		eventObject = getEventObject(event)
 
 		switch (eventType) {
-			case EventType.GetUploadSignedUrl:
+			case EventType.GetSignedUrl:
 				eventHandler = new EventHandlerGetSignedUrl()
 				break
 
