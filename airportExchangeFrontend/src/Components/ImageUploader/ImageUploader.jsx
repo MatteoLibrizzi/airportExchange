@@ -19,10 +19,6 @@ const ImageUploader = (props) => {
 			onChangeStatus={({ meta, file }, status) => {
 				console.log(status, meta, file)
 			}}
-			onSubmit={(files, allFiles) => {
-				console.log(files.map((f) => f.meta))
-				allFiles.forEach((f) => f.remove())
-			}}
 			accept='image/*'
 		/>
 	)

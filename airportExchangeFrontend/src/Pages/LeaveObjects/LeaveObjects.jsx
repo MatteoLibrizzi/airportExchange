@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 
-import { getCategories, getItems } from '../../Redux/appSlice'
-import { Footer, Header, LeaveObjectForm } from '../../Components'
+import { makeStyles } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { CircularProgress, makeStyles, Grid } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { Footer, Header, LeaveObjectFormText } from '../../Components'
 import { getSingleItem } from '../../Redux/appSlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +36,7 @@ const LeaveObjects = () => {
 		<>
 			<Header />
 
-			<LeaveObjectForm />
+			<LeaveObjectFormText />
 			<Footer />
 		</>
 	)

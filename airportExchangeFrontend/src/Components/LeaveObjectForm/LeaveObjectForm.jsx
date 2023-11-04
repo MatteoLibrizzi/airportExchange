@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import { getCategories, getItems } from '../../Redux/appSlice'
-import { Footer, Header, ImageUploader } from '../../Components'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import {
-	Grid,
-	Typography,
-	makeStyles,
-	Button,
-	alpha,
-	Chip,
-} from '@material-ui/core'
+import { Button, Grid, TextField, alpha, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { useSelector } from 'react-redux'
-import { getSingleItem } from '../../Redux/appSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
 		padding: theme.spacing(4),
-		justifyContent: 'space-around',
 		height: 'auto',
 		alignItems: 'center',
 		[theme.breakpoints.up('md')]: {
 			padding: theme.spacing(10),
 		},
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	longItem: {
+		width: '60%',
+	},
+	shortItem: {
+		width: '20%',
 	},
 	imgContainer: {
 		width: '100%',
@@ -46,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const LeaveObjectForm = () => {
+const LeaveObjectFormText = () => {
 	const hasUploadedImage = useState(true)
 	const uploadedImageURL = useState('')
 	const handleImageUpload = () => {}
@@ -58,62 +52,66 @@ const LeaveObjectForm = () => {
 	const pending = false
 	const handleClick = () => {}
 	const image = ''
-
+	// TODO make the links work
+	// button must redirect to next page where user can upload image
 	return (
 		<Grid container className={classes.container}>
-			<Grid item xs={12} sm={4}>
-				<div className={classes.imgContainer}>
-					{hasUploadedImage ? (
-						<ImageUploader uploadURL='https://5k3fdtvru2.execute-api.eu-west-1.amazonaws.com/getPosts'/>
-					) : (
-						<Button onClick={handleImageUpload}>
-							<Typography>Upload Image</Typography>
-						</Button>
-					)}
-				</div>
-			</Grid>
-			<Grid item xs={12} sm={6}>
-				<Typography className={classes.marginTopTwo} variant='h4'>
-					{'enter title'}
-				</Typography>
-
-				<Chip
-					label={category}
+			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
+				<TextField
+					classNames={classes.marginTopTwo}
+					id='outlined-basic'
+					label='Title'
 					variant='outlined'
-					className={classes.marginTopTwo}
+					fullWidth
 				/>
-				<Typography
+			</Grid>
+			<Grid className={classNames(classes.longItem)} item xs={15}>
+				<TextField
 					className={classNames(
 						classes.paleText,
-						classes.marginTopTwo,
+						classes.marginTopTwo
 					)}
-					variant='body1'>
-					{'enter description '}
-				</Typography>
-				<Typography
+					id='outlined-basic'
+					label='Description'
+					variant='outlined'
+					fullWidth
+					multiline
+				/>
+			</Grid>
+			<Grid className={classNames(classes.longItem)} item xs={15}>
+				<TextField
 					className={classNames(
 						classes.paleText,
-						classes.marginTopTwo,
+						classes.marginTopTwo
 					)}
-					variant='body1'>
-					{'enter where to find it '}
-				</Typography>
-
+					id='outlined-basic'
+					label='Where to find it'
+					variant='outlined'
+					fullWidth
+					multiline
+				/>
+			</Grid>
+			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
 				<Button
 					className={classNames(
 						classes.letterSpace,
-						classes.marginTopTwo,
+						classes.marginTopTwo
 					)}
 					fullWidth
 					variant='contained'
 					color='primary'
 					disabled={pending}
 					onClick={handleClick}>
-					Leave Object
+					Proceed
 				</Button>
 			</Grid>
 		</Grid>
 	)
 }
 
-export default LeaveObjectForm
+/*
+
+				
+*/
+
+export default LeaveObjectFormText
