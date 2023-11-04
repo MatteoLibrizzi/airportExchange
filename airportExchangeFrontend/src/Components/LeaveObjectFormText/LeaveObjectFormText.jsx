@@ -1,7 +1,16 @@
-import React, { useState } from 'react'
-
-import { Button, Grid, TextField, alpha, makeStyles } from '@material-ui/core'
+import {
+	Button,
+	Grid,
+	TextField,
+	Typography,
+	alpha,
+	makeStyles,
+} from '@material-ui/core'
 import classNames from 'classnames'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { handleButtonClickInTextForm } from '../../Redux/leaveSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -13,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 		display: 'flex',
 		flexDirection: 'column',
+	},
+	text: {
+		textAlign: 'center',
+		paddingBottom: '20px',
 	},
 	longItem: {
 		width: '60%',
@@ -40,29 +53,55 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const LeaveObjectFormText = () => {
-	const hasUploadedImage = useState(true)
-	const uploadedImageURL = useState('')
-	const handleImageUpload = () => {}
+const LeaveObjectFormText = ({ airportId }) => {
+	const {
+		name: nameRedux,
+		description: descriptionRedux,
+		location: locationRedux,
+	} = useSelector((state) => state.leave)
+
+	const navigate = useNavigate()
+
 	const classes = useStyles()
-	const title = 'title'
-	const description = ''
-	const category = ''
-	const price = 3
-	const pending = false
-	const handleClick = () => {}
-	const image = ''
+	const [name, setName] = useState(nameRedux)
+	const [description, setDescription] = useState(descriptionRedux)
+	const [location, setLocation] = useState(locationRedux)
+
+	const dispatch = useDispatch()
+	const handleClick = () => {
+		dispatch(
+			handleButtonClickInTextForm({
+				name,
+				description,
+				location,
+				airportId,
+			})
+		)
+		navigate('/leaveImageForm')
+	}
 	// TODO make the links work
 	// button must redirect to next page where user can upload image
 	return (
 		<Grid container className={classes.container}>
+			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
+				<Typography
+					className={classNames(classes.text)}
+					color='initial'
+					variant='h4'>
+					Provide information on the object you are leaving
+				</Typography>
+			</Grid>
 			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
 				<TextField
 					classNames={classes.marginTopTwo}
 					id='outlined-basic'
-					label='Title'
+					label='Name'
 					variant='outlined'
 					fullWidth
+					onChange={(event) => {
+						setName(event.target.value)
+					}}
+					value={name}
 				/>
 			</Grid>
 			<Grid className={classNames(classes.longItem)} item xs={15}>
@@ -76,6 +115,10 @@ const LeaveObjectFormText = () => {
 					variant='outlined'
 					fullWidth
 					multiline
+					onChange={(event) => {
+						setDescription(event.target.value)
+					}}
+					value={description}
 				/>
 			</Grid>
 			<Grid className={classNames(classes.longItem)} item xs={15}>
@@ -85,10 +128,14 @@ const LeaveObjectFormText = () => {
 						classes.marginTopTwo
 					)}
 					id='outlined-basic'
-					label='Where to find it'
+					label='Location'
 					variant='outlined'
 					fullWidth
 					multiline
+					onChange={(event) => {
+						setLocation(event.target.value)
+					}}
+					value={location}
 				/>
 			</Grid>
 			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
@@ -100,7 +147,9 @@ const LeaveObjectFormText = () => {
 					fullWidth
 					variant='contained'
 					color='primary'
-					disabled={pending}
+					disabled={
+						name === '' || description === '' || location === ''
+					}
 					onClick={handleClick}>
 					Proceed
 				</Button>
@@ -108,10 +157,5 @@ const LeaveObjectFormText = () => {
 		</Grid>
 	)
 }
-
-/*
-
-				
-*/
 
 export default LeaveObjectFormText

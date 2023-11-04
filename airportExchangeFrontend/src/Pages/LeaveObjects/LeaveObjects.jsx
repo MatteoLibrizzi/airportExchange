@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Footer, Header, LeaveObjectFormText } from '../../Components'
+import { Footer, Header, LeaveObjectFormImage, LeaveObjectFormText } from '../../Components'
 import { getSingleItem } from '../../Redux/appSlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -22,9 +22,12 @@ const LeaveObjects = () => {
 	const { airportId } = useParams()
 
 	const classes = useStyles()
-	const { pending, items } = useSelector((state) => state.app)
 
-	console.log(airportId)
+	const formState =
+		window.location.href.split('/')[3] === 'leaveTextForm'
+			? 'textForm'
+			: 'imageForm'
+	console.log(formState)
 
 	const dispatch = useDispatch()
 
@@ -35,8 +38,11 @@ const LeaveObjects = () => {
 	return (
 		<>
 			<Header />
-
-			<LeaveObjectFormText />
+			{formState === 'textForm' ? (
+				<LeaveObjectFormText airportId={airportId} />
+			) : (
+				<LeaveObjectFormImage />
+			)}
 			<Footer />
 		</>
 	)

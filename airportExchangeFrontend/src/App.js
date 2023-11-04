@@ -1,27 +1,27 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
 import {
+	CustomSnackbar,
 	Footer,
 	Header,
 	PrivateRoute,
-	CustomSnackbar,
 	Redirect,
 } from './Components'
 import {
 	Account,
 	Cart,
 	Checkout,
-	Home,
-	Login,
+	Error,
 	FindAirport,
+	GetObjects,
+	Home,
+	LeaveObjects,
+	Login,
+	Shipping,
 	SignUp,
 	SingleProductPage,
-	Shipping,
-	Error,
-	GetObjects,
-	LeaveObjects,
 } from './Pages'
-import { useSelector } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
 	const { url } = useSelector((state) => state.cart)
@@ -57,7 +57,15 @@ const App = () => {
 					}
 				/>
 				<Route
-					path='/leave/:airportId'
+					path='/leaveTextForm/:airportId'
+					element={
+						<>
+							<LeaveObjects />
+						</>
+					}
+				/>
+				<Route
+					path='/leaveImageForm'
 					element={
 						<>
 							<LeaveObjects />

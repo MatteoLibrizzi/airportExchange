@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import cartReducer from './cartSlice'
 import appReducer from './appSlice'
+import cartReducer from './cartSlice'
+import leaveReducer from './leaveSlice'
 import userReducer from './userSlice'
 
 export default configureStore({
@@ -8,5 +9,6 @@ export default configureStore({
 		app: appReducer,
 		cart: cartReducer,
 		user: userReducer,
+		leave: leaveReducer,
 	},
 })
