@@ -15,6 +15,8 @@ exports.handler = async function (event: any) {
 			case EventType.GetSignedUrl:
 				eventHandler = new EventHandlerGetSignedUrl()
 				break
+			case EventType.LeaveObject:
+
 
 			default:
 				throw new Error('No event handler found')

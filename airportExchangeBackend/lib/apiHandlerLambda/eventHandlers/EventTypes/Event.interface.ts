@@ -1,5 +1,6 @@
 export enum EventType {
-    GetSignedUrl = 'getSignedUrl'
+    GetSignedUrl = 'getSignedUrl',
+    LeaveObject = 'leaveObject',
 }
 
 export interface EventObject {
