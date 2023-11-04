@@ -5,9 +5,11 @@ import {
 } from './EventTypes/EventGetSingedUrl'
 import { EventResponseGetSignedUrl } from './ResponseTypes/EventResponseGetSignedUrl'
 import { SignedUrlGenerator } from './signedUrls/SignedUrlGenerator'
+import { isFileSizeTooBig } from './utils'
 
 export class EventHandlerGetSignedUrl
-	implements EventHandler<EventGetSignedUrl, Promise<EventResponseGetSignedUrl>>
+	implements
+		EventHandler<EventGetSignedUrl, Promise<EventResponseGetSignedUrl>>
 {
 	handleEvent = async (input: EventGetSignedUrl) => {
 		console.log(
@@ -19,7 +21,14 @@ export class EventHandlerGetSignedUrl
 				url = await SignedUrlGenerator.getSignedUrlGet(input.objectKey)
 				break
 			case SignedURLMethod.PUT:
-				url = await SignedUrlGenerator.getSignedUrlPut(input.objectKey)
+				const requiredFileSize = input.contentLength
+				if (!requiredFileSize || isFileSizeTooBig(requiredFileSize)) {
+					throw new Error('Did not specify file size')
+				}
+				url = await SignedUrlGenerator.getSignedUrlPut(
+					input.objectKey,
+					requiredFileSize!
+				)
 				break
 			default:
 				url = ''

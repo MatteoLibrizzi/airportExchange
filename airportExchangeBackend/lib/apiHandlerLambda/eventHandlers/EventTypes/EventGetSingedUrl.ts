@@ -5,5 +5,6 @@ export enum SignedURLMethod {
 }
 export interface EventGetUploadSignedUrl extends EventObject {
     objectKey: string,
-    method: SignedURLMethod
+    method: SignedURLMethod,
+    contentLength?: number,
 }

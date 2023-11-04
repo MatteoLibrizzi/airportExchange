@@ -9,5 +9,6 @@ export const eventGetSignedUrlGet = {
 
 export const eventGetSignedUrlPut = {
     objectKey: expectedObjectKey,
-    method: SignedURLMethod.PUT
+    method: SignedURLMethod.PUT,
+    contentLength: 2,
 }

@@ -5,20 +5,21 @@ import apiCaller from '../../api/apiCaller'
 import { GetSignedUrlMethodEnum } from '../../api/getSignedUrl'
 
 const ImageUploader = (props) => {
-
 	//TODO https://react-dropzone-uploader.js.org/docs/s3
-	// find a way to prevent ddos
 	// handle frontend when image is uploaded (store name, show image ecc)
-	const getUploadParams = async ({ meta: {name}, file }) => {
-		const url = await apiCaller.getSignedUrl('testKey', GetSignedUrlMethodEnum.PUT)
-		return { url, method:'PUT', body: file }
+	const getUploadParams = async ({ meta: { name }, file }) => {
+		const url = await apiCaller.getSignedUrl(
+			'testKey',
+			GetSignedUrlMethodEnum.PUT,
+			file.size
+		)
+		return { url, method: 'PUT', body: file }
 	}
 	return (
 		<Dropzone
-			getUploadParams={getUploadParams} // specify upload params and url for your files
-			onChangeStatus={({ meta, file }, status) => {
-				console.log(status, meta, file)
-			}}
+			getUploadParams={getUploadParams}
+			onChangeStatus={({ meta, file }, status) => {}}
+			maxSizeBytes={5_000_000}
 			accept='image/*'
 		/>
 	)

@@ -6,12 +6,12 @@ export const ApiEventType = {
 }
 
 class ApiCaller {
-	getSignedUrl = async (objectKey, method) => {
+	getSignedUrl = async (objectKey, method, contentLength) => {
 		let eventObject
 		let event
 		switch (method) {
 			case GetSignedUrlMethodEnum.PUT:
-				eventObject = `{"objectKey": "${objectKey}","method":"${GetSignedUrlMethodEnum.PUT}"}`
+				eventObject = `{"objectKey": "${objectKey}","method":"${GetSignedUrlMethodEnum.PUT}","contentLength":${contentLength ?? 0}}`
 				event = {
 					eventType: ApiEventType.GetSignedUrl,
 					eventObject,
