@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, alpha, makeStyles } from '@material-ui/core'
+import { Grid, Typography, alpha, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -69,8 +69,6 @@ const LeaveObjectFormImage = () => {
 
 	const dispatch = useDispatch()
 	const handleClick = () => {}
-	// TODO make the links work
-	// button must redirect to next page where user can upload image
 	return (
 		<Grid container className={classes.container}>
 			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
@@ -85,20 +83,7 @@ const LeaveObjectFormImage = () => {
 				<BasicTable rows={rows} headRow={[]} />
 			</Grid>
 			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
-				<ImageUploader />
-			</Grid>
-			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
-				<Button
-					className={classNames(
-						classes.letterSpace,
-						classes.marginTopTwo
-					)}
-					fullWidth
-					variant='contained'
-					color='primary'
-					onClick={() => {}}>
-					Leave Object
-				</Button>
+				<ImageUploader onSubmit={handleClick}/>
 			</Grid>
 		</Grid>
 	)
