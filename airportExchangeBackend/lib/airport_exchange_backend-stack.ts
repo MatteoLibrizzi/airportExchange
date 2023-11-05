@@ -5,6 +5,7 @@ import {
 } from '@aws-cdk/aws-apigatewayv2-alpha'
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha'
 import * as cdk from 'aws-cdk-lib'
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
@@ -16,6 +17,13 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 	apiHandlerLambda: lambda.IFunction
 	userImagesBucket: cdk.aws_s3.Bucket
 	lambdaLayerNodeJSS3SignedURLGenerator: lambda.ILayerVersion
+	DDBObjects: cdk.aws_dynamodb.Table
+
+	createDDBObjectsTable = () => {
+		this.DDBObjects = new dynamodb.Table(this, 'objects', {
+			partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
+		})
+	}
 
 	initLambdaLayers = () => {
 		this.lambdaLayerNodeJSS3SignedURLGenerator = new lambda.LayerVersion(
@@ -60,6 +68,12 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 			roleName: 'LambdaAPIHandlerRole',
 		})
 
+		const dynamoDBPolicy = new iam.PolicyStatement({
+			effect: iam.Effect.ALLOW,
+			actions: ['dynamodb:PutItem', 'dynamodb:GetItem'],
+			resources: [this.DDBObjects.tableArn],
+		})
+
 		const s3PolicyStatement = new iam.PolicyStatement({
 			effect: iam.Effect.ALLOW,
 			actions: ['s3:*'],
@@ -69,8 +83,8 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 			],
 		})
 		apiHandlerLambdaRole.addToPolicy(s3PolicyStatement)
+		apiHandlerLambdaRole.addToPolicy(dynamoDBPolicy)
 
-		// assign basic role too
 		apiHandlerLambdaRole.addManagedPolicy(
 			ManagedPolicy.fromAwsManagedPolicyName(
 				'service-role/AWSLambdaBasicExecutionRole'
@@ -122,6 +136,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 		super(scope, id, props)
 
 		this.initLambdaLayers()
+		this.createDDBObjectsTable()
 		this.createUserImagesS3Bucket()
 		this.createLambdaAPIHandler()
 		this.createAPIGateway()

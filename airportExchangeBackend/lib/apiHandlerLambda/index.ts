@@ -1,4 +1,5 @@
 import { EventHandlerGetSignedUrl } from './eventHandlers/EventHandlerGetSignedUrl'
+import { EventHandlerLeaveObject } from './eventHandlers/EventHandlerLeaveObject'
 import { EventType } from './eventHandlers/EventTypes/Event.interface'
 import { getEventObject, getEventType } from './utils'
 
@@ -16,8 +17,8 @@ exports.handler = async function (event: any) {
 				eventHandler = new EventHandlerGetSignedUrl()
 				break
 			case EventType.LeaveObject:
-
-
+				eventHandler = new EventHandlerLeaveObject()
+				break
 			default:
 				throw new Error('No event handler found')
 		}

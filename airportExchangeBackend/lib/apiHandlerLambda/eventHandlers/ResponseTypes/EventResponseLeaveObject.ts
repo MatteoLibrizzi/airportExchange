@@ -1,6 +1,5 @@
-
-import { EventResponse } from "./EventResponse.interface";
+import { EventResponse } from './EventResponse.interface'
 
 export interface EventResponseLeaveObject extends EventResponse {
-    
+	signedUrl: string
 }
