@@ -1,54 +1,29 @@
-import { Button, Card, CardMedia, Grid, alpha, makeStyles } from '@material-ui/core'
+import { Button, Card, CardMedia, Grid, makeStyles } from '@material-ui/core'
 
 import classNames from 'classnames'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		padding: theme.spacing(4),
-		height: 'auto',
-		alignItems: 'center',
-		[theme.breakpoints.up('md')]: {
-			padding: theme.spacing(10),
-		},
+	item: {
+	},
+	row: {
 		display: 'flex',
 		flexDirection: 'row',
+        alignItems: 'center',
 	},
-	text: {
-		textAlign: 'center',
-		paddingBottom: '20px',
-	},
-	longItem: {
-		width: '60%',
-	},
-	shortItem: {
-		width: '20%',
-	},
-	imgContainer: {
-		width: '100%',
+	image: {
+		padding: '10px',
+		width: 'auto',
 		height: 'auto',
-		boxShadow: theme.shadows[3],
 	},
-	img: {
-		width: '100%',
-		height: '100%',
-	},
-	marginTopTwo: {
-		marginTop: theme.spacing(2),
-	},
-	paleText: {
-		color: alpha('#333', 0.8),
-	},
-	letterSpace: {
-		letterSpacing: 2.5,
-	},
-	root: {
-		maxWidth: 500,
-		[theme.breakpoints.up('sm')]: {
-			maxHeight: 400,
-		},
+	button: {
+        width: '50%',
+        height: '30%',
+        backgroundColor: 'red'
 	},
 }))
+
+//TODO fucking CSS
 
 // TODO watch how it's done here https://github.com/fortana-co/react-dropzone-uploader/blob/master/src/Preview.tsx
 export const customPreview = (props) => {
@@ -78,15 +53,11 @@ export const customPreview = (props) => {
 
 	return (
 		<>
-			<Grid container className={classes.container}>
-				<Grid
-					className={classNames()}
-					item
-					xs={12}
-					sm={6}>
-					<Card className={classes.root}>
+			<Grid container className={classNames(classes.row)}>
+				<Grid className={classNames(classes.item)} item xs={12} sm={6}>
+					<Card className={classNames(classes.image)}>
 						<CardMedia
-							className={classes.media}
+							className={classNames()}
 							src={previewUrl}
 							title={'Preview'}
 							component='img'
@@ -95,12 +66,16 @@ export const customPreview = (props) => {
 					</Card>
 				</Grid>
 				<Grid
-					className={classNames(classes.longItem)}
+					className={classNames(classes.item)}
+					alignItems='center'
 					item
 					xs={12}
 					sm={6}>
-                        <Button>aa</Button>
-                    </Grid>
+						<Button className={classNames(classes.button)}>
+							aa
+						</Button>
+					
+				</Grid>
 			</Grid>
 		</>
 	)
