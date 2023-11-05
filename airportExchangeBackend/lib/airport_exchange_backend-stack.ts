@@ -20,7 +20,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 	DDBObjects: cdk.aws_dynamodb.Table
 
 	createDDBObjectsTable = () => {
-		this.DDBObjects = new dynamodb.Table(this, 'objects', {
+		this.DDBObjects = new dynamodb.Table(this, 'leftObjects', {
 			partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
 		})
 	}
@@ -97,6 +97,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 			code: lambda.Code.fromAsset('build/lib/apiHandlerLambda'),
 			environment: {
 				USER_IMAGES_BUCKET_NAME: this.userImagesBucket.bucketName,
+				LEFT_OBJECTS_TABLE_NAME: this.DDBObjects.tableName,
 			},
 			role: apiHandlerLambdaRole,
 			layers: [this.lambdaLayerNodeJSS3SignedURLGenerator],

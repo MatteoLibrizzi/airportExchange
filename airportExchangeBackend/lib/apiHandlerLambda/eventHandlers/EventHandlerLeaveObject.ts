@@ -19,12 +19,12 @@ export class EventHandlerLeaveObject
 			throw new Error('Did not specify file size or size too big')
 		}
 
-		const currentIndex = DbHandler.getCurrentIndex()
-		DbHandler.incrementCurrentIndex()
+		const currentIndex = await DbHandler.getCurrentIndex()
+		await DbHandler.incrementCurrentIndex()
 
 		const imageS3Key = input.name + JSON.stringify(currentIndex)
 
-		const dbResponse = DbHandler.leaveObject({
+		const dbResponse = await DbHandler.leaveObject({
 			name: input.name,
 			description: input.description,
 			location: input.location,
