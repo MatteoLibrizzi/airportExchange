@@ -1,4 +1,3 @@
-import { Md5 } from 'ts-md5'
 import { EventHandler } from './EventHandler.interface'
 import { EventLeaveObject } from './EventTypes/EventLeaveObject'
 import { EventResponseLeaveObject } from './ResponseTypes/EventResponseLeaveObject'
@@ -15,27 +14,22 @@ export class EventHandlerLeaveObject
 			`Handling event Leave Object with input ${JSON.stringify(input)}`
 		)
 
-		const randomNumber = Math.ceil(Math.random() * 1_000_000)
+		const requiredFileSize = input.imageBytes
+		if (!requiredFileSize || isFileSizeTooBig(requiredFileSize)) {
+			throw new Error('Did not specify file size or size too big')
+		}
 
-		const imageS3Key = Md5.hashStr(
-			input.name +
-				input.description +
-				input.location +
-				JSON.stringify(randomNumber)
-		)
+		const currentIndex = DbHandler.getCurrentIndex()
+		DbHandler.incrementCurrentIndex()
+
+		const imageS3Key = input.name + JSON.stringify(currentIndex)
 
 		const dbResponse = DbHandler.leaveObject({
 			name: input.name,
 			description: input.description,
 			location: input.location,
-			randomNumber,
 			imageS3Key,
 		})
-
-		const requiredFileSize = input.imageBytes
-		if (!requiredFileSize || isFileSizeTooBig(requiredFileSize)) {
-			throw new Error('Did not specify file size or size too big')
-		}
 
 		const signedUrl = await SignedUrlGenerator.getSignedUrlPut(
 			imageS3Key,

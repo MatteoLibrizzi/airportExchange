@@ -1,11 +1,8 @@
 import { EventHandler } from './EventHandler.interface'
 import {
-	EventGetUploadSignedUrl as EventGetSignedUrl,
-	SignedURLMethod,
+	EventGetUploadSignedUrl as EventGetSignedUrl
 } from './EventTypes/EventGetSingedUrl'
 import { EventResponseGetSignedUrl } from './ResponseTypes/EventResponseGetSignedUrl'
-import { SignedUrlGenerator } from './signedUrls/SignedUrlGenerator'
-import { isFileSizeTooBig } from './utils'
 
 export class EventHandlerGetSignedUrl
 	implements
@@ -15,6 +12,10 @@ export class EventHandlerGetSignedUrl
 		console.log(
 			`Handling event GetSignedUrl with input ${JSON.stringify(input)}`
 		)
+		return {
+			signedUrl: ''
+		}
+		/*
 		let url = ''
 		switch (input.method) {
 			case SignedURLMethod.GET:
@@ -38,5 +39,6 @@ export class EventHandlerGetSignedUrl
 		const response: EventResponseGetSignedUrl = { signedUrl: url }
 
 		return response
+		*/
 	}
 }

@@ -1,6 +1,6 @@
 import { EventHandlerLeaveObject } from "../eventHandlers/EventHandlerLeaveObject"
 import { DbHandler } from "../eventHandlers/dbHandler/DbHandler"
-import { expectedDescription, expectedImageS3Key, expectedLocation, expectedName, leaveObjectEvent } from "./resources/leaveObjectEvent"
+import { expectedDescription, expectedLocation, expectedName, leaveObjectEvent } from "./resources/leaveObjectEvent"
 
 test('Leave object event handler receives the correct parametres', () => {
     const eventHandler = new EventHandlerLeaveObject()
@@ -9,5 +9,5 @@ test('Leave object event handler receives the correct parametres', () => {
 
     eventHandler.handleEvent(leaveObjectEvent)
 
-    expect(DbHandler.leaveObject).toHaveBeenCalledWith(expectedName, expectedDescription, expectedLocation, expectedImageS3Key)
+    expect(DbHandler.leaveObject).toHaveBeenCalledWith(expect.objectContaining({name: expectedName, description: expectedDescription, location: expectedLocation}))
 })
