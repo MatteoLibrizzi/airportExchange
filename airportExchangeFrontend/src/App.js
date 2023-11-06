@@ -73,6 +73,14 @@ const App = () => {
 					}
 				/>
 				<Route
+					path='/leaveCompleteForm'
+					element={
+						<>
+							<LeaveObjects />
+						</>
+					}
+				/>
+				<Route
 					path='/account'
 					element={
 						<PrivateRoute>

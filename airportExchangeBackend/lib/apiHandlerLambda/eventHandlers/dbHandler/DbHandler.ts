@@ -1,11 +1,16 @@
 import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb'
 
-import { DDB_CLIENT, LEFT_OBJECTS_TABLE_NAME, PK_CURRENT_INDEX } from '../../constants'
+import {
+	DDB_CLIENT,
+	LEFT_OBJECTS_TABLE_NAME,
+	PK_CURRENT_INDEX,
+} from '../../constants'
 
 export interface LeaveObjectDBInput {
 	name: string
 	description: string
 	location: string
+	airportId: string
 	imageS3Key: string
 }
 export class DbHandler {
@@ -13,6 +18,7 @@ export class DbHandler {
 		name,
 		description,
 		location,
+		airportId,
 		imageS3Key,
 	}: LeaveObjectDBInput) => {
 		const Item = {
@@ -20,6 +26,7 @@ export class DbHandler {
 			name: { S: name },
 			description: { S: description },
 			location: { S: location },
+			airportId: { S: airportId },
 			imageS3Key: { S: imageS3Key },
 		}
 		const putCommand = new PutItemCommand({
@@ -70,19 +77,19 @@ export class DbHandler {
 
 		console.log({ nextIndex })
 
-        const Item = {
-            pk: { S: PK_CURRENT_INDEX },
-            value: { N: `${nextIndex}` },
-        }
-        const putCommand = new PutItemCommand({
-            TableName: LEFT_OBJECTS_TABLE_NAME,
-            Item,
-        })
+		const Item = {
+			pk: { S: PK_CURRENT_INDEX },
+			value: { N: `${nextIndex}` },
+		}
+		const putCommand = new PutItemCommand({
+			TableName: LEFT_OBJECTS_TABLE_NAME,
+			Item,
+		})
 
-        const response = await DDB_CLIENT.send(putCommand)
+		const response = await DDB_CLIENT.send(putCommand)
 
-        if (response.$metadata.httpStatusCode !== 200) {
-            throw new Error('Write to db was not successful')
-        }
+		if (response.$metadata.httpStatusCode !== 200) {
+			throw new Error('Write to db was not successful')
+		}
 	}
 }

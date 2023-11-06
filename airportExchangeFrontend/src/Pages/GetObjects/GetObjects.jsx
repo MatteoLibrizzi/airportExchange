@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 
-import { getCategories, getItems } from '../../Redux/appSlice'
+import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import {
 	Footer,
 	Header,
 	ItemList,
 } from '../../Components'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { CircularProgress, makeStyles, Grid } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { getCategories, getItems } from '../../Redux/appSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -29,7 +28,6 @@ const GetObjects = () => {
 	const classes = useStyles()
 	const { pending, items } = useSelector((state) => state.app)
 
-	console.log(airportId)
 
 	const dispatch = useDispatch()
 

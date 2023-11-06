@@ -28,6 +28,7 @@ export class EventHandlerLeaveObject
 			name: input.name,
 			description: input.description,
 			location: input.location,
+			airportId: input.airportId,
 			imageS3Key,
 		})
 

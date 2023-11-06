@@ -1,10 +1,6 @@
-import { Button, Grid, Typography, alpha, makeStyles } from '@material-ui/core'
-import { ArrowBack } from '@material-ui/icons'
+import { Grid, Typography, alpha, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { BasicTable } from '../../Components'
-import Uploader from '../ImageUploader/ImageUploader'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -58,22 +54,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-function createData(key, value) {
-	return [key, value]
-}
-
-const LeaveObjectFormImage = () => {
-	const { name, description, location, airportId, signedUrl } = useSelector(
-		(state) => state.leave
-	)
-
-	const rows = [
-		createData('Name', name),
-		createData('Description', description),
-		createData('Location', location),
-		createData('Airport ID', airportId),
-	]
-
+const LeaveObjectFormComplete = () => {
 	const classes = useStyles()
 	return (
 		<Grid container className={classes.container}>
@@ -82,26 +63,12 @@ const LeaveObjectFormImage = () => {
 					className={classNames(classes.text)}
 					color='initial'
 					variant='h4'>
-					Provide an image for the object
+					Thank you for leaving an object. A fellow traveler will find it helpful!
 				</Typography>
 			</Grid>
-			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
-				<BasicTable rows={rows} headRow={[]} />
-			</Grid>
-			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
-				<Uploader className={classNames(classes.imageUploader)} />
-			</Grid>
-			<Grid
-				className={classNames(classes.longItem, classes.centerChild)}
-				item
-				xs={12}
-				sm={6}>
-				<Button className={classNames(classes.flexAndCenterColumn)}>
-					<ArrowBack />
-				</Button>
-			</Grid>
+			
 		</Grid>
 	)
 }
 
-export default LeaveObjectFormImage
+export default LeaveObjectFormComplete

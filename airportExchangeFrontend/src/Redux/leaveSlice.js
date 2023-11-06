@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
 export const leaveSlice = createSlice({
 	name: 'leave',
 	initialState: {
 		title: '',
 		description: '',
 		location: '',
-		imageKey: '',
+		signedUrl: '',
 		airportId: '',
 	},
 	reducers: {

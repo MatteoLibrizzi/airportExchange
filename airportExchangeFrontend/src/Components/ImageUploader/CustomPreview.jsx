@@ -5,13 +5,12 @@ import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
 	item: {
-		backgroundColor: 'blue',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	row: {
 		display: 'flex',
 		flexDirection: 'row',
-        alignItems: 'center',
+		alignItems: 'center',
 	},
 	image: {
 		padding: '10px',
@@ -19,14 +18,12 @@ const useStyles = makeStyles((theme) => ({
 		height: 'auto',
 	},
 	button: {
-        width: '50%',
-        height: '30%',
-        backgroundColor: 'red'
+		width: '50%',
+		height: '30%',
 	},
 }))
 
 //TODO fucking CSS
-
 // TODO watch how it's done here https://github.com/fortana-co/react-dropzone-uploader/blob/master/src/Preview.tsx
 export const customPreview = (props) => {
 	const {
@@ -49,6 +46,7 @@ export const customPreview = (props) => {
 		canRemove,
 		canRestart,
 		extra: { minSizeBytes },
+		onClick,
 	} = props
 
 	const classes = useStyles()
@@ -73,10 +71,12 @@ export const customPreview = (props) => {
 					item
 					xs={12}
 					sm={6}>
-						<Button className={classNames(classes.button)}>
-							aa
-						</Button>
-					
+					<Button
+						className={classNames(classes.button)}
+						onClick={onClick}
+						>
+						aa
+					</Button>
 				</Grid>
 			</Grid>
 		</>

@@ -10,7 +10,6 @@ import * as React from 'react'
 const BasicTable = (props) => {
 	const rows = props.rows
 	const headRow = props.headRow
-	console.log(rows)
 	return (
 		<TableContainer component={Paper}>
 			<Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -25,7 +24,6 @@ const BasicTable = (props) => {
 				</TableHead>
 				<TableBody>
 					{rows.map((row, index) => {
-						console.log(row)
 						return (
 							<TableRow
 								key={index}

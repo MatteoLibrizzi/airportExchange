@@ -3,7 +3,13 @@ import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Footer, Header, LeaveObjectFormImage, LeaveObjectFormText } from '../../Components'
+import {
+	Footer,
+	Header,
+	LeaveObjectFormComplete,
+	LeaveObjectFormImage,
+	LeaveObjectFormText,
+} from '../../Components'
 import { getSingleItem } from '../../Redux/appSlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -21,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
 const LeaveObjects = () => {
 	const { airportId } = useParams()
 
-	const classes = useStyles()
-
 	const formState =
 		window.location.href.split('/')[3] === 'leaveTextForm'
 			? 'textForm'
-			: 'imageForm'
-	console.log(formState)
+			: window.location.href.split('/')[3] === 'leaveImageForm'
+			? 'imageForm'
+			: 'completionForm'
 
 	const dispatch = useDispatch()
 
@@ -40,8 +45,10 @@ const LeaveObjects = () => {
 			<Header />
 			{formState === 'textForm' ? (
 				<LeaveObjectFormText airportId={airportId} />
-			) : (
+			) : formState === 'imageForm' ? (
 				<LeaveObjectFormImage />
+			) : (
+				<LeaveObjectFormComplete />
 			)}
 			<Footer />
 		</>
