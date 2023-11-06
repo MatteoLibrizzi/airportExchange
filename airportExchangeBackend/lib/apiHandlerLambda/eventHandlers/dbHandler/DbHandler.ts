@@ -1,6 +1,6 @@
 import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb'
 
-import { DDB_CLIENT, LEFT_OBJECTS_TABLE_NAME } from '../../constants'
+import { DDB_CLIENT, LEFT_OBJECTS_TABLE_NAME, PK_CURRENT_INDEX } from '../../constants'
 
 export interface LeaveObjectDBInput {
 	name: string
@@ -35,18 +35,17 @@ export class DbHandler {
 	}
 
 	static getCurrentIndex = async () => {
-		// current index can be stored in the item at pk = '0', if this is not present then it means table is empty and we create the item, and return the value 0
 		const getCommand = new GetItemCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,
 			Key: {
-				pk: { S: '0' },
+				pk: { S: PK_CURRENT_INDEX },
 			},
 		})
 		const response = await DDB_CLIENT.send(getCommand)
 
 		if (!response.Item) {
 			const Item = {
-				pk: { S: '0' },
+				pk: { S: PK_CURRENT_INDEX },
 				value: { N: '0' },
 			}
 			const putCommand = new PutItemCommand({
@@ -61,19 +60,18 @@ export class DbHandler {
 			}
 
 			return 0
-		} else {// TODO possibly add cast
-            //TODO delete item from ddb otherwise state is inconsistent
-			return response.Item['value']['N']
+		} else {
+			return Number(response.Item['value']['N'])
 		}
 	}
 
 	static incrementCurrentIndex = async () => {
-		let nextIndex = (await this.getCurrentIndex()) ?? 0 + 1
+		let nextIndex = ((await this.getCurrentIndex()) ?? 0) + 1
 
 		console.log({ nextIndex })
 
         const Item = {
-            pk: { S: '0' },
+            pk: { S: PK_CURRENT_INDEX },
             value: { N: `${nextIndex}` },
         }
         const putCommand = new PutItemCommand({

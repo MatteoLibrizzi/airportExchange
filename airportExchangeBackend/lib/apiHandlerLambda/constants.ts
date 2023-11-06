@@ -9,3 +9,4 @@ export const DDB_CLIENT = new DynamoDBClient({
 	region: 'eu-west-1',
 })
 export const LEFT_OBJECTS_TABLE_NAME = process.env.LEFT_OBJECTS_TABLE_NAME || 'leftObjects'
+export const PK_CURRENT_INDEX = '0'

@@ -5,6 +5,8 @@ import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
 	item: {
+		backgroundColor: 'blue',
+		alignItems: 'center'
 	},
 	row: {
 		display: 'flex',
