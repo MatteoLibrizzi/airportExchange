@@ -27,11 +27,9 @@ test('Should throw if airportId is not provided', async () => {
 		async () => []
 	)
 
-	let hasThrown = false
-	try {
-		await eventHandler.handleEvent(getObjectsInAirportEventWithoutAirportId)
-	} catch (e) {
-		hasThrown = true
-	}
-	expect(hasThrown).toEqual(true)
+	const result = await eventHandler.handleEvent(
+		getObjectsInAirportEventWithoutAirportId
+	)
+
+	expect(result).toEqual({ error: 'airportId was not provided', objects: [] })
 })

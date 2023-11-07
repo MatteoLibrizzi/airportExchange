@@ -15,7 +15,10 @@ export class EventHandlerGetObjectsInAirport
 		const airportId = input.airportId
 
 		if (!airportId) {
-			throw new Error('AirportId was not provided')
+			return {
+				error: 'airportId was not provided',
+				objects: []
+			}
 		}
 
 		const objectsInAirportResult = await DbHandler.getObjectsInAirport(
