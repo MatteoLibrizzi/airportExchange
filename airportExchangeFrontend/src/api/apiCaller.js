@@ -4,9 +4,28 @@ import { GetSignedUrlMethodEnum } from './getSignedUrl'
 export const ApiEventType = {
 	GetSignedUrl: 'getSignedUrl',
 	LeaveObject: 'leaveObject',
+	GetObjectsInAirport: 'getObjectsInAirport',
 }
 
 class ApiCaller {
+	getObjectsInAirport = async (airportId) => {
+		const eventObject = `{"airportId":"${airportId}"}`
+		const event = {
+			eventType: ApiEventType.GetObjectsInAirport,
+			eventObject
+		}
+
+
+		const response = await axios.post(API_ENDPOINT, event, {
+			headers: { 'Content-Type': 'application/json' },
+		})
+		if (!response.data || !response.data.objects) {
+			throw new Error('Something went wrong')
+		}
+
+		return response.data.objects
+	}
+
 	leaveObject = async (name, description, location, airportId, imageBytes) => {
 		const eventObject = `{"name": "${name}","description": "${description}","location": "${location}","imageBytes": ${imageBytes},"airportId":"${airportId}"}`
 		const event = {

@@ -35,7 +35,7 @@ const Uploader = (props) => {
 			console.log(e)
 		}
 
-		return { url, method: 'PUT', body: file }
+		return { url, method: 'PUT', body: file, }
 	}
 
 	return (
@@ -45,7 +45,6 @@ const Uploader = (props) => {
 			onChangeStatus={({ meta, file }, status) => {}}
 			maxSizeBytes={5_000_000}
 			accept='image/*'
-			onSubmit={true}
 		/>
 	)
 }

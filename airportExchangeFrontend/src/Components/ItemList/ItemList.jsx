@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import SingleItem from '../SingleItem/SingleItem'
 import {
-	CircularProgress,
-	makeStyles,
-	Grid,
 	Button,
+	CircularProgress,
+	Grid,
 	Typography,
+	makeStyles,
 } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getCategories, getItems } from '../../Redux/appSlice'
+import SingleItem from '../SingleItem/SingleItem'
 
 const mapThroughItems = (items) => {
 	return items.map((item, idx) => {
@@ -49,8 +48,7 @@ const ItemList = (props) => {
 					className={classes.container}
 					container
 					spacing={4}
-					xs={10}
-					sm={8}>
+					>
 					{mapThroughItems(items)}
 				</Grid>
 			) : !pending && items.length === 0 ? (

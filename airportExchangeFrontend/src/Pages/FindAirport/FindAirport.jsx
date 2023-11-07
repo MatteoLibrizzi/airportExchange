@@ -1,24 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { Input, ItemList, Categories, ScrollBtn } from '../../Components'
-import { useDispatch } from 'react-redux'
-import { getCategories, getItems } from '../../Redux/appSlice'
-import { useSelector } from 'react-redux'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Input, ItemList, ScrollBtn } from '../../Components'
+import { setSearchResult } from '../../Redux/getSlice'
+import apiCaller from '../../api/apiCaller'
 
 const FindAirport = () => {
 	const dispatch = useDispatch()
 	const getObjectsFlag = window.location.href.split('?')[1] === 'get'
 	const leaveObjectsFlag = !getObjectsFlag
-	const { pending, items } = useSelector((state) => state.app)
+	const { searchValue, searchResult } = useSelector((state) => state.get)
+	let pending = false
 
-	useEffect(() => {
-		dispatch(getCategories())
-		dispatch(getItems())
-	}, [dispatch])
+	console.log({ searchValue, searchResult })
+
+	const handleSearch = async (value) => {
+		pending = true
+		const response = await apiCaller.getObjectsInAirport(value)
+		const searchResult = response.map(res => {
+			res.image = res.signedUrl
+			return res
+		})
+		dispatch(setSearchResult({searchResult}))
+		pending = false
+	}
 
 	return (
 		<>
-			<Input />
-			<ItemList items={items} pending={pending}/>
+			<Input handleSearch={handleSearch} />
+			<ItemList items={searchResult} pending={pending} />
 			<ScrollBtn />
 		</>
 	)

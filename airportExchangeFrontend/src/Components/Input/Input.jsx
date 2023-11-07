@@ -1,9 +1,10 @@
-import React from 'react'
-import { makeStyles, alpha, InputBase, Grid } from '@material-ui/core'
+import { Button, Grid, InputBase, alpha, makeStyles } from '@material-ui/core'
+import { ArrowForward } from '@material-ui/icons'
 import SearchIcon from '@material-ui/icons/Search'
-import { useSelector, useDispatch } from 'react-redux'
-import { searchBarFunction } from '../../Redux/appSlice'
-import { setSearchBarValue } from '../../Redux/appSlice'
+import classNames from 'classnames'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setSearchValueGlobal } from '../../Redux/getSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -49,16 +50,22 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create('width'),
 		width: '100%',
 	},
+	inputButton: {
+		position: 'absolute',
+		right: '0',
+		height: '100%',
+		width: '20%',
+	},
 }))
 
-const Input = () => {
+const Input = (props) => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const { searchValue } = useSelector((state) => state.app)
+	const [searchValue, setSearchValue] = useState('')
 
-	const handleChange = (event) => {
-		dispatch(setSearchBarValue(event.target.value))
-		dispatch(searchBarFunction(event.target.value))
+	const handleClick = () => {
+		props.handleSearch(searchValue)
+		dispatch(setSearchValueGlobal({ searchValue }))
 	}
 
 	return (
@@ -68,16 +75,21 @@ const Input = () => {
 					<SearchIcon />
 				</div>
 				<InputBase
-					placeholder="Find Airport"
+					placeholder='Find Airport'
 					classes={{
 						root: classes.inputRoot,
 						input: classes.inputInput,
 					}}
 					inputProps={{ 'aria-label': 'search' }}
 					value={searchValue}
-					onChange={handleChange}
-					name="searchValue"
+					onChange={(event) => setSearchValue(event.target.value)}
+					name='searchValue'
 				/>
+				<Button
+					className={classNames(classes.inputButton)}
+					onClick={handleClick}>
+					<ArrowForward />
+				</Button>
 			</div>
 		</Grid>
 	)
