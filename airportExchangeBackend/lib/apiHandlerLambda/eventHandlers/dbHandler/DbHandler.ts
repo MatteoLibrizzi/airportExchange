@@ -1,4 +1,4 @@
-import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb'
+import { GetItemCommand, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb'
 
 import {
 	DDB_CLIENT,
@@ -16,13 +16,25 @@ export interface LeaveObjectDBInput {
 }
 export class DbHandler {
 	static getObjectsInAirport = async (airportId: string) => {
-		const Key = {
-			airportId: { S: airportId },
+		const ExpressionAttributeValues = {
+			':v1': {
+				S: airportId
+			}
 		}
-		const getCommand = new GetItemCommand({
+		const KeyConditionExpression = `airportId = :v1`
+		const queryCommand = new QueryCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,
-			Key,
+			KeyConditionExpression,
+			ExpressionAttributeValues,
 		})
+
+		const response = await DDB_CLIENT.send(queryCommand)
+
+		if (!response.Items) {
+			return []
+		}
+
+		return response.Items
 	}
 
 	static leaveObject = async ({

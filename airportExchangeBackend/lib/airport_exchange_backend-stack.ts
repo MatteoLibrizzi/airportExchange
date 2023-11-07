@@ -77,7 +77,7 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 
 		const dynamoDBPolicy = new iam.PolicyStatement({
 			effect: iam.Effect.ALLOW,
-			actions: ['dynamodb:PutItem', 'dynamodb:GetItem'],
+			actions: ['dynamodb:PutItem', 'dynamodb:GetItem', 'dynamodb:Query',],
 			resources: [this.DDBObjects.tableArn],
 		})
 
