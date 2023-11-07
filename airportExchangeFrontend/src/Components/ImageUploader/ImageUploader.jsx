@@ -13,20 +13,27 @@ const useStyles = makeStyles((theme) => ({
 
 const Uploader = (props) => {
 	const classes = useStyles()
-	const { name, description, location, airportId } = useSelector((state) => state.leave)
+	const { name, description, location, airportId } = useSelector(
+		(state) => state.leave
+	)
 	const navigate = useNavigate()
 	//TODO https://react-dropzone-uploader.js.org/docs/s3
 	// handle frontend when image is uploaded (store name, show image ecc)
 	const getUploadParams = async ({ file }) => {
-		const url = await apiCaller.leaveObject(
-			name,
-			description,
-			location,
-			airportId,
-			file.size
-		)
-
-		navigate('/leaveCompleteForm')
+		console.log(name, description, location, airportId, file.size)
+		let url
+		try {
+			url = await apiCaller.leaveObject(
+				name,
+				description,
+				location,
+				airportId,
+				file.size
+			)
+			navigate('/leaveCompleteForm')
+		} catch (e) {
+			console.log(e)
+		}
 
 		return { url, method: 'PUT', body: file }
 	}

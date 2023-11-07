@@ -16,6 +16,9 @@ class ApiCaller {
 		const response = await axios.post(API_ENDPOINT, event, {
 			headers: { 'Content-Type': 'application/json' },
 		})
+		if (!response.data || !response.data.signedUrl) {
+			throw new Error('Something went wrong')
+		}
 		const url = response.data.signedUrl
 
 		return url

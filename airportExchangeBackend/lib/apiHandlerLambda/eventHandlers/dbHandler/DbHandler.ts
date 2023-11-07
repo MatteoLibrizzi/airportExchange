@@ -4,6 +4,7 @@ import {
 	DDB_CLIENT,
 	LEFT_OBJECTS_TABLE_NAME,
 	PK_CURRENT_INDEX,
+	SK_CURRENT_INDEX,
 } from '../../constants'
 
 export interface LeaveObjectDBInput {
@@ -46,6 +47,7 @@ export class DbHandler {
 			TableName: LEFT_OBJECTS_TABLE_NAME,
 			Key: {
 				pk: { S: PK_CURRENT_INDEX },
+				airportId: {S: SK_CURRENT_INDEX},
 			},
 		})
 		const response = await DDB_CLIENT.send(getCommand)
@@ -54,6 +56,7 @@ export class DbHandler {
 			const Item = {
 				pk: { S: PK_CURRENT_INDEX },
 				value: { N: '0' },
+				airportId: {S: SK_CURRENT_INDEX}
 			}
 			const putCommand = new PutItemCommand({
 				TableName: LEFT_OBJECTS_TABLE_NAME,
@@ -80,6 +83,7 @@ export class DbHandler {
 		const Item = {
 			pk: { S: PK_CURRENT_INDEX },
 			value: { N: `${nextIndex}` },
+			airportId: {S: SK_CURRENT_INDEX},
 		}
 		const putCommand = new PutItemCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,
