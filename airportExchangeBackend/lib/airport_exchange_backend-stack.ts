@@ -21,8 +21,14 @@ export class AirportExchangeBackendStack extends cdk.Stack {
 
 	createDDBObjectsTable = () => {
 		this.DDBObjects = new dynamodb.Table(this, 'leftObjects', {
-			partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
-			sortKey: { name: 'airportId', type: dynamodb.AttributeType.STRING },
+			sortKey: {
+				name: 'imageS3Key',
+				type: dynamodb.AttributeType.STRING,
+			},
+			partitionKey: {
+				name: 'airportId',
+				type: dynamodb.AttributeType.STRING,
+			},
 		})
 	}
 

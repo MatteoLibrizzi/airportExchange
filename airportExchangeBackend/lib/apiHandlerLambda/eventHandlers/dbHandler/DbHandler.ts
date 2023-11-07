@@ -15,6 +15,16 @@ export interface LeaveObjectDBInput {
 	imageS3Key: string
 }
 export class DbHandler {
+	static getObjectsInAirport = async (airportId: string) => {
+		const Key = {
+			airportId: { S: airportId },
+		}
+		const getCommand = new GetItemCommand({
+			TableName: LEFT_OBJECTS_TABLE_NAME,
+			Key,
+		})
+	}
+
 	static leaveObject = async ({
 		name,
 		description,
@@ -23,7 +33,6 @@ export class DbHandler {
 		imageS3Key,
 	}: LeaveObjectDBInput) => {
 		const Item = {
-			pk: { S: imageS3Key },
 			name: { S: name },
 			description: { S: description },
 			location: { S: location },
@@ -46,17 +55,17 @@ export class DbHandler {
 		const getCommand = new GetItemCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,
 			Key: {
-				pk: { S: PK_CURRENT_INDEX },
-				airportId: {S: SK_CURRENT_INDEX},
+				imageS3Key: { S: SK_CURRENT_INDEX },
+				airportId: { S: PK_CURRENT_INDEX },
 			},
 		})
 		const response = await DDB_CLIENT.send(getCommand)
 
 		if (!response.Item) {
 			const Item = {
-				pk: { S: PK_CURRENT_INDEX },
+				imageS3Key: { S: SK_CURRENT_INDEX },
 				value: { N: '0' },
-				airportId: {S: SK_CURRENT_INDEX}
+				airportId: { S: PK_CURRENT_INDEX },
 			}
 			const putCommand = new PutItemCommand({
 				TableName: LEFT_OBJECTS_TABLE_NAME,
@@ -81,9 +90,9 @@ export class DbHandler {
 		console.log({ nextIndex })
 
 		const Item = {
-			pk: { S: PK_CURRENT_INDEX },
+			imageS3Key: { S: SK_CURRENT_INDEX },
 			value: { N: `${nextIndex}` },
-			airportId: {S: SK_CURRENT_INDEX},
+			airportId: { S: PK_CURRENT_INDEX },
 		}
 		const putCommand = new PutItemCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,
