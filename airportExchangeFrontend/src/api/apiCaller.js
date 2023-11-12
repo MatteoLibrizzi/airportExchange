@@ -5,9 +5,26 @@ export const ApiEventType = {
 	GetSignedUrl: 'getSignedUrl',
 	LeaveObject: 'leaveObject',
 	GetObjectsInAirport: 'getObjectsInAirport',
+	PickUpObject: 'pickUpObject',
 }
 
 class ApiCaller {
+	pickUpObject = async (imageS3Key, airportId) => {
+		const eventObject = `{"airportId":"${airportId}","imageS3Key":"${imageS3Key}"}`
+		const event = {
+			eventType: ApiEventType.PickUpObject,
+			eventObject
+		}
+		const response = await axios.post(API_ENDPOINT, event, {
+			headers: { 'Content-Type': 'application/json' },
+		})
+		if (!response.data || !response.data.successful) {
+			throw new Error('Something went wrong')
+		}
+
+		return response.data
+	}
+
 	getObjectsInAirport = async (airportId) => {
 		const eventObject = `{"airportId":"${airportId}"}`
 		const event = {

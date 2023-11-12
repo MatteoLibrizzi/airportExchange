@@ -2,9 +2,9 @@ import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import Object from '../../Components/Object/Object'
 import { setSearchResult, setSearchValueGlobal } from '../../Redux/getSlice'
 import { searchObjectsInAirport } from '../../api/searchObjectsInAirport'
-import Object from '../Object/Object'
 
 const useStyles = makeStyles((theme) => ({
 	container: {

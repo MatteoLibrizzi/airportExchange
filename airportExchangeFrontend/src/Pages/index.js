@@ -7,7 +7,6 @@ import GetObjects from './GetObjects/GetObjects'
 import Home from './Home/Home'
 import LeaveObjects from './LeaveObjects/LeaveObjects'
 import Login from './Login/Login'
-import Object from './Object/Object'
 import SingleObjectPage from './ObjectPage/ObjectPage'
 import Shipping from './Shipping/Shipping'
 import SignUp from './SignUp/SignUp'
@@ -22,7 +21,7 @@ export {
 	GetObjects,
 	Home,
 	LeaveObjects,
-	Login, Object, Shipping,
+	Login, Shipping,
 	SignUp,
 	SingleObjectPage,
 	SingleProductPage

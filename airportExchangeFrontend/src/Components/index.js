@@ -11,6 +11,7 @@ import ItemList from './ItemList/ItemList'
 import LeaveObjectFormComplete from './LeaveObjectFormComplete/LeaveObjectFormComplete'
 import LeaveObjectFormImage from './LeaveObjectFormImage/LeaveObjectFormImage'
 import LeaveObjectFormText from './LeaveObjectFormText/LeaveObjectFormText'
+import Object from './Object/Object'
 import OrderSummary from './OrderSummary/OrderSummary'
 import PrivateRoute from './PrivateRoute/PrivateRoute'
 import Redirect from './Redirect/Redirect'
@@ -28,11 +29,9 @@ export {
     Header,
     Hero, Input,
     ItemList, LeaveObjectFormComplete, LeaveObjectFormImage,
-    LeaveObjectFormText,
-    OrderSummary,
+    LeaveObjectFormText, Object, OrderSummary,
     PrivateRoute,
-    Redirect,
-    ScrollBtn,
+    Redirect, ScrollBtn,
     SingleProduct, Uploader
 }
 

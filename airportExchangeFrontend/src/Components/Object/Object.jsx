@@ -1,6 +1,7 @@
 import { Button, Grid, Typography, alpha, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
+import apiCaller from '../../api/apiCaller'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -55,9 +56,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Object = ({ item }) => {
 	console.log(item)
-	const { name, description, location, image } = item
+	// TODO handle the case when object has been picked up
+	const { name, description, location, image, key, airportId } = item
 
 	const classes = useStyles()
+
+	const handleClick = async () => {
+		await apiCaller.pickUpObject(key, airportId)
+	}
 
 	return (
 		<Grid container className={classes.container}>
@@ -142,7 +148,7 @@ const Object = ({ item }) => {
 							variant='contained'
 							color='primary'
 							// TODO write the api call to pick up the object
-							onClick={() => {}}>
+							onClick={handleClick}>
 							Pick Up
 						</Button>
 					</Grid>
