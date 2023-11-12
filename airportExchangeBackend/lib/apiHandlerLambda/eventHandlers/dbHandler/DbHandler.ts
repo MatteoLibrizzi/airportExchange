@@ -1,4 +1,8 @@
-import { GetItemCommand, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb'
+import {
+	GetItemCommand,
+	PutItemCommand,
+	QueryCommand,
+} from '@aws-sdk/client-dynamodb'
 
 import {
 	DDB_CLIENT,
@@ -15,11 +19,48 @@ export interface LeaveObjectDBInput {
 	imageS3Key: string
 }
 export class DbHandler {
+	static pickUpObject = async (imageS3Key: string, airportId: string) => {
+		const getCommand = new GetItemCommand({
+			TableName: LEFT_OBJECTS_TABLE_NAME,
+			Key: {
+				imageS3Key: { S: imageS3Key },
+				airportId: { S: airportId },
+			},
+		})
+		const getResponse = await DDB_CLIENT.send(getCommand)
+
+		if (!getResponse.Item) {
+			throw new Error('Object not found')
+		}
+		const Item = getResponse.Item
+
+		Item.pickedUp = {
+			BOOL: true,
+		}
+
+		console.log({ Item })
+
+		const putCommand = new PutItemCommand({
+			TableName: LEFT_OBJECTS_TABLE_NAME,
+			Item,
+		})
+		console.log({ putCommand })
+
+		const putResponse = await DDB_CLIENT.send(putCommand)
+		console.log({ putResponse })
+
+		if (putResponse.$metadata.httpStatusCode !== 200) {
+			throw new Error('Write to db was not successful')
+		}
+
+		return { successful: true }
+	}
+
 	static getObjectsInAirport = async (airportId: string) => {
 		const ExpressionAttributeValues = {
 			':v1': {
-				S: airportId
-			}
+				S: airportId,
+			},
 		}
 		const KeyConditionExpression = `airportId = :v1`
 		const queryCommand = new QueryCommand({
@@ -50,6 +91,7 @@ export class DbHandler {
 			location: { S: location },
 			airportId: { S: airportId },
 			imageS3Key: { S: imageS3Key },
+			pickedUp: { BOOL: false },
 		}
 		const putCommand = new PutItemCommand({
 			TableName: LEFT_OBJECTS_TABLE_NAME,

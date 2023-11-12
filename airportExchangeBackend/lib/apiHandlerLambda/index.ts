@@ -1,6 +1,7 @@
 import { EventHandlerGetObjectsInAirport } from './eventHandlers/EventHandlerGetObjectsInAirport'
 import { EventHandlerGetSignedUrl } from './eventHandlers/EventHandlerGetSignedUrl'
 import { EventHandlerLeaveObject } from './eventHandlers/EventHandlerLeaveObject'
+import { EventHandlerPickUpObject } from './eventHandlers/EventHandlerPickUpObject'
 import { EventType } from './eventHandlers/EventTypes/Event.interface'
 import { getEventObject, getEventType } from './utils'
 
@@ -14,6 +15,10 @@ exports.handler = async function (event: any) {
 	eventObject = getEventObject(event)
 
 	switch (eventType) {
+		//current TODO write endpoint to pickup object
+		case EventType.PickUpObject:
+			eventHandler = new EventHandlerPickUpObject()
+			break
 		case EventType.GetSignedUrl:
 			eventHandler = new EventHandlerGetSignedUrl()
 			break
