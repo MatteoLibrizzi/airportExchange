@@ -6,6 +6,7 @@ export interface EventResponseGetObjectsInAirport extends EventResponse {
 		description: string
 		location: string
 		airportId: string
+		pickedUp: boolean
 		signedUrl?: string
 	}>
 }
