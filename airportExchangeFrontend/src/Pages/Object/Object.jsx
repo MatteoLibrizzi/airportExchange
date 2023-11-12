@@ -109,7 +109,7 @@ const Object = ({ item }) => {
 								classes.text,
 								classes.marginTopTwo
 							)}
-							variant='h4'>
+							variant='body2'>
 							{description}
 						</Typography>
 					</Grid>
@@ -128,7 +128,7 @@ const Object = ({ item }) => {
 								classes.text,
 								classes.marginTopTwo
 							)}
-							variant='h4'>
+							variant='body2'>
 							{location}
 						</Typography>
 					</Grid>
