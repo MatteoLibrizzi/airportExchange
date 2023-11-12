@@ -1,15 +1,6 @@
-import {
-    Button,
-    Grid,
-    Typography,
-    alpha,
-    makeStyles
-} from '@material-ui/core'
+import { Button, Grid, Typography, alpha, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { openSnackBar } from '../../Redux/appSlice'
-import { addToCart } from '../../Redux/cartSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -39,68 +30,123 @@ const useStyles = makeStyles((theme) => ({
 	letterSpace: {
 		letterSpacing: 2.5,
 	},
+	textOuterContainer: {
+		[theme.breakpoints.up('md')]: {
+			padding: theme.spacing(10),
+		},
+	},
+	textInnerContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		width: '80%',
+	},
+	textItems: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	text: {
+		padding: '10px',
+	},
+	bold: {
+		fontWeight: 'bold',
+	},
 }))
 
-const Object = () => {
-	const { singleItem } = useSelector((state) => state.app)
-	const { pending, error } = useSelector((state) => state.cart)
-	const user = useSelector((state) => state.user.user)
+const Object = ({ item }) => {
+	console.log(item)
+	const { name, description, location, image } = item
 
 	const classes = useStyles()
-	const { title, price, description, category, image, _id } = singleItem
-	const dispatch = useDispatch()
-
-	const handleClick = () => {
-		if (!user) {
-			dispatch(openSnackBar({ severity: 'error', text: 'Please Log In' }))
-		} else {
-			dispatch(addToCart(_id))
-			if (!error && !pending) {
-				dispatch(
-					openSnackBar({
-						severity: 'success',
-						text: 'Item has been added to cart',
-					})
-				)
-			} else if (error && !pending) {
-				dispatch(
-					openSnackBar({
-						severity: 'error',
-						text: 'Something went wrong',
-					})
-				)
-			}
-		}
-	}
 
 	return (
 		<Grid container className={classes.container}>
 			<Grid item xs={12} sm={4}>
 				<div className={classes.imgContainer}>
-					<img src={image} alt={title} className={classes.img} />
+					<img src={image} alt={name} className={classes.img} />
 				</div>
 			</Grid>
-			<Grid item xs={12} sm={6}>
-				<Typography className={classes.marginTopTwo} variant="h4">
-					{'title'}
-				</Typography>
-				<Typography
-					className={classNames(classes.paleText, classes.marginTopTwo)}
-					variant="body1"
-				>
-					{'description'}
-				</Typography>
-				
-				<Button
-					className={classNames(classes.letterSpace, classes.marginTopTwo)}
-					fullWidth
-					variant="contained"
-					color="primary"
-					disabled={pending}
-					onClick={handleClick}
-				>
-               Add to Cart
-				</Button>
+			<Grid
+				item
+				className={classNames(classes.textOuterContainer)}
+				xs={12}
+				sm={6}>
+				<Grid
+					container
+					className={classNames(classes.textInnerContainer)}>
+					<Grid item className={classNames(classes.textItems)}>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.paleText,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{'Name:	'}
+						</Typography>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.bold,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{name}
+						</Typography>
+					</Grid>
+					<Grid item className={classNames(classes.textItems)}>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.paleText,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{'Description:'}
+						</Typography>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{description}
+						</Typography>
+					</Grid>
+					<Grid item className={classNames(classes.textItems)}>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.paleText,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{'Location:'}
+						</Typography>
+						<Typography
+							className={classNames(
+								classes.text,
+								classes.marginTopTwo
+							)}
+							variant='h4'>
+							{location}
+						</Typography>
+					</Grid>
+					<Grid item className={classNames(classes.textItems)}>
+						<Button
+							className={classNames(
+								classes.letterSpace,
+								classes.marginTopTwo
+							)}
+							fullWidth
+							variant='contained'
+							color='primary'
+							// TODO write the api call to pick up the object
+							onClick={() => {}}>
+							Pick Up
+						</Button>
+					</Grid>
+				</Grid>
 			</Grid>
 		</Grid>
 	)

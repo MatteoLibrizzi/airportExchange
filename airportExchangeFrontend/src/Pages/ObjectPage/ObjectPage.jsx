@@ -1,7 +1,9 @@
 import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { setSearchResult, setSearchValueGlobal } from '../../Redux/getSlice'
+import { searchObjectsInAirport } from '../../api/searchObjectsInAirport'
 import Object from '../Object/Object'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,19 +19,29 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SingleObjectPage = () => {
-	const { key } = useParams()
+	const { airportId, key } = useParams()
+	const { itemsByKey } = useSelector((state) => state.get)
+
 	const [pending, setPending] = useState(true)
 
 	const classes = useStyles()
 
 	const dispatch = useDispatch()
-	useEffect(() => {
+
+	useEffect(async () => {
+		setPending(true)
+		if (!itemsByKey[key]) {
+			const { searchResult } = await searchObjectsInAirport(airportId)
+
+			dispatch(setSearchResult({ searchResult }))
+			dispatch(setSearchValueGlobal({ searchValue: airportId }))
+		}
 		setPending(false)
 	})
 	return (
 		<>
 			{!pending ? (
-				<Object />
+				<Object item={itemsByKey[key]} />
 			) : (
 				<Grid className={classes.container} container>
 					<CircularProgress size='5rem' />

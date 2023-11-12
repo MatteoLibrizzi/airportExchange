@@ -2,25 +2,20 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input, ItemList, ScrollBtn } from '../../Components'
 import { setSearchResult } from '../../Redux/getSlice'
-import apiCaller from '../../api/apiCaller'
+import { searchObjectsInAirport } from '../../api/searchObjectsInAirport'
 
 const FindAirport = () => {
 	const dispatch = useDispatch()
 	const { searchResult } = useSelector((state) => state.get)
 	let pending = false
 
-
 	const handleSearch = async (value) => {
 		pending = true
-		const response = await apiCaller.getObjectsInAirport(value)
-		const searchResult = response.map(res => {
-			res.image = res.signedUrl
-			return res
-		})
-		dispatch(setSearchResult({searchResult}))
+		const { searchResult } = await searchObjectsInAirport(value)
+
+		dispatch(setSearchResult({ searchResult }))
 		pending = false
 	}
-	// TODO reuse signed url in the single object page, figure out if it's okay with the timing
 	return (
 		<>
 			<Input handleSearch={handleSearch} />

@@ -28,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
 
 const SingleItem = ({ item }) => {
 	const classes = useStyles()
-	const { _id, name, image, airportId, key } = item
+	const { name, image, airportId, key } = item
 
-	console.log(key)
+	console.log({item})
 	
 	const navigate = useNavigate()
 	return (
 		<Grid item xs={4} sm={4} lg={3}>
 			<Card className={classes.root}>
-				<CardActionArea onClick={() => navigate(`/object/${key}`)}>
+				<CardActionArea onClick={() => navigate(`/object/${airportId}/${key}`)}>
 					<CardMedia
 						className={classes.media}
 						src={image}

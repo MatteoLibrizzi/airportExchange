@@ -17,8 +17,6 @@ const Uploader = (props) => {
 		(state) => state.leave
 	)
 	const navigate = useNavigate()
-	//TODO https://react-dropzone-uploader.js.org/docs/s3
-	// handle frontend when image is uploaded (store name, show image ecc)
 	const getUploadParams = async ({ file }) => {
 		console.log(name, description, location, airportId, file.size)
 		let url

@@ -5,7 +5,7 @@ export const getSlice = createSlice({
 	initialState: {
 		searchValue: '',
 		searchResult: [],
-		imagesByKey: {},
+		itemsByKey: {},
 	},
 	reducers: {
 		setSearchValueGlobal: (state, action) => {
@@ -15,8 +15,8 @@ export const getSlice = createSlice({
 		setSearchResult: (state, action) => {
 			const { searchResult } = action.payload
 			state.searchResult = searchResult
-			state.searchResult.map(entry => {
-				state.imagesByKey[entry.key] = entry.image
+			state.searchResult.forEach(item => {
+				state.itemsByKey[item.key] = item
 			})
 		},
 	},

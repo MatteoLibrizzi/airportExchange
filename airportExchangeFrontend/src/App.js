@@ -66,7 +66,7 @@ const App = () => {
 					}
 				/>
 				<Route
-					path='/object/:key'
+					path='/object/:airportId/:key'
 					element={
 						<>
 							<Header />

@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import SingleItem from '../SingleItem/SingleItem'
 
@@ -35,26 +34,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ItemList = (props) => {
-	const dispatch = useDispatch()
 	const pending = props.pending
 	const items = props.items
-	
-	const imagesByKey = {}
-	items.forEach(item => {
-		imagesByKey[item.key] = item.image
-	})
-	console.log({imagesByKey})
+
 	const classes = useStyles()
 
 	const navigate = useNavigate()
 	return (
 		<>
 			{!pending && items.length > 0 ? (
-				<Grid
-					className={classes.container}
-					container
-					spacing={4}
-					>
+				<Grid className={classes.container} container spacing={4}>
 					{mapThroughItems(items)}
 				</Grid>
 			) : !pending && items.length === 0 ? (
