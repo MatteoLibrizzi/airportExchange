@@ -45,6 +45,7 @@ export class EventHandlerGetObjectsInAirport
 						description: result.description.S!,
 						location: result.location.S!,
 						airportId: result.airportId.S!,
+						key: result.imageS3Key.S,
 						signedUrl,
 					}
 				} catch (e) {
@@ -53,6 +54,7 @@ export class EventHandlerGetObjectsInAirport
 						description: '',
 						location: '',
 						airportId: '',
+						key: '',
 					}
 				}
 			})

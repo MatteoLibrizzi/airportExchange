@@ -3,7 +3,7 @@ import { ArrowForward } from '@material-ui/icons'
 import SearchIcon from '@material-ui/icons/Search'
 import classNames from 'classnames'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setSearchValueGlobal } from '../../Redux/getSlice'
 
 const useStyles = makeStyles((theme) => ({
@@ -61,11 +61,12 @@ const useStyles = makeStyles((theme) => ({
 const Input = (props) => {
 	const classes = useStyles()
 	const dispatch = useDispatch()
-	const [searchValue, setSearchValue] = useState('')
+	const { searchValue: searchValueRedux } = useSelector((state) => state.get)
+	console.log({ searchValueRedux })
+	const [searchValue, setSearchValue] = useState(searchValueRedux)
 
 	const handleClick = () => {
 		props.handleSearch(searchValue)
-		dispatch(setSearchValueGlobal({ searchValue }))
 	}
 
 	return (
@@ -82,7 +83,14 @@ const Input = (props) => {
 					}}
 					inputProps={{ 'aria-label': 'search' }}
 					value={searchValue}
-					onChange={(event) => setSearchValue(event.target.value)}
+					onChange={(event) => {
+						setSearchValue(event.target.value)
+						dispatch(
+							setSearchValueGlobal({
+								searchValue: event.target.value,
+							})
+						)
+					}}
 					name='searchValue'
 				/>
 				<Button

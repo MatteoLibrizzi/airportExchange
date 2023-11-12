@@ -14,7 +14,6 @@ import { handleButtonClickInTextForm } from '../../Redux/leaveSlice'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
-		padding: theme.spacing(4),
 		height: 'auto',
 		alignItems: 'center',
 		[theme.breakpoints.up('md')]: {
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'column',
 	},
-	text: {
+	item: {
 		textAlign: 'center',
 		paddingBottom: '20px',
 	},
@@ -53,11 +52,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const LeaveObjectFormText = ({ airportId }) => {
+const LeaveObjectFormText = () => {
 	const {
 		name: nameRedux,
 		description: descriptionRedux,
 		location: locationRedux,
+		airportId: airportIdRedux
 	} = useSelector((state) => state.leave)
 
 	const navigate = useNavigate()
@@ -66,6 +66,7 @@ const LeaveObjectFormText = ({ airportId }) => {
 	const [name, setName] = useState(nameRedux)
 	const [description, setDescription] = useState(descriptionRedux)
 	const [location, setLocation] = useState(locationRedux)
+	const [airportId, setAirportId] = useState(airportIdRedux)
 
 	const dispatch = useDispatch()
 	const handleClick = () => {
@@ -79,11 +80,9 @@ const LeaveObjectFormText = ({ airportId }) => {
 		)
 		navigate('/leaveImageForm')
 	}
-	// TODO make the links work
-	// button must redirect to next page where user can upload image
 	return (
 		<Grid container className={classes.container}>
-			<Grid className={classNames(classes.longItem)} item xs={12} sm={6}>
+			<Grid className={classNames(classes.longItem, classes.item)} item xs={12} sm={6}>
 				<Typography
 					className={classNames(classes.text)}
 					color='initial'
@@ -91,7 +90,7 @@ const LeaveObjectFormText = ({ airportId }) => {
 					Provide information on the object you are leaving
 				</Typography>
 			</Grid>
-			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>
+			<Grid className={classNames(classes.shortItem,classes.item)} item xs={12} sm={6}>
 				<TextField
 					classNames={classes.marginTopTwo}
 					id='outlined-basic'
@@ -104,7 +103,7 @@ const LeaveObjectFormText = ({ airportId }) => {
 					value={name}
 				/>
 			</Grid>
-			<Grid className={classNames(classes.longItem)} item xs={15}>
+			<Grid className={classNames(classes.longItem, classes.item)} item xs={15}>
 				<TextField
 					className={classNames(
 						classes.paleText,
@@ -121,7 +120,7 @@ const LeaveObjectFormText = ({ airportId }) => {
 					value={description}
 				/>
 			</Grid>
-			<Grid className={classNames(classes.longItem)} item xs={15}>
+			<Grid className={classNames(classes.longItem, classes.item)} item xs={15}>
 				<TextField
 					className={classNames(
 						classes.paleText,
@@ -136,6 +135,19 @@ const LeaveObjectFormText = ({ airportId }) => {
 						setLocation(event.target.value)
 					}}
 					value={location}
+				/>
+			</Grid>
+			<Grid className={classNames(classes.shortItem, classes.item)} item xs={15} sm={6}>
+				<TextField
+					classNames={classNames(classes.paleText,classes.marginTopTwo)}
+					id='outlined-basic'
+					label='Airport Code'
+					variant='outlined'
+					fullWidth
+					onChange={(event) => {
+						setAirportId(event.target.value)
+					}}
+					value={airportId}
 				/>
 			</Grid>
 			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>

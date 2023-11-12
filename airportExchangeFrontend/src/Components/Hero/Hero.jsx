@@ -1,12 +1,12 @@
-import React from 'react'
 import {
-	Grid,
-	makeStyles,
-	alpha,
-	Typography,
 	Button,
+	Grid,
+	Typography,
+	alpha,
+	makeStyles,
 	withStyles,
 } from '@material-ui/core'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import img from '../../assets/background.jpg'
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +101,7 @@ const Hero = () => {
 				<WhiteButton
 					variant="outlined"
 					size="large"
-					onClick={() => navigate('/findAirport')}
+					onClick={() => navigate('/findObjectInAirport')}
 				>
                Find your airport!
 				</WhiteButton>

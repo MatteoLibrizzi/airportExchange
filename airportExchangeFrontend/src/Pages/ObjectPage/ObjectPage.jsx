@@ -1,9 +1,8 @@
 import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { SingleProduct } from '../../Components'
-import { getSingleItem } from '../../Redux/appSlice'
+import Object from '../Object/Object'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -17,19 +16,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const SingleProductPage = () => {
-	const { id } = useParams()
-	const { pending } = useSelector((state) => state.app)
+const SingleObjectPage = () => {
+	const { key } = useParams()
+	const [pending, setPending] = useState(true)
+
 	const classes = useStyles()
 
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(getSingleItem(id))
-	}, [id, dispatch])
+		setPending(false)
+	})
 	return (
 		<>
 			{!pending ? (
-				<SingleProduct />
+				<Object />
 			) : (
 				<Grid className={classes.container} container>
 					<CircularProgress size='5rem' />
@@ -39,4 +39,4 @@ const SingleProductPage = () => {
 	)
 }
 
-export default SingleProductPage
+export default SingleObjectPage

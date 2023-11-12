@@ -1,27 +1,23 @@
-import React, { useEffect } from 'react'
-import Menu from '../Menu/Menu'
-import { useNavigate } from 'react-router-dom'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import MenuIcon from '@material-ui/icons/Menu'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import {
-	Grid,
-	makeStyles,
-	Typography,
 	AppBar,
-	Toolbar,
-	IconButton,
-	Badge,
 	Button,
 	Fade,
+	Grid,
+	IconButton,
+	Toolbar,
+	Typography,
+	makeStyles
 } from '@material-ui/core'
-import { useSelector, useDispatch } from 'react-redux'
-import { openMenu, closeMenu } from '../../Redux/appSlice'
-import classNames from 'classnames'
-import { logOut } from '../../Redux/userSlice'
 import CloseIcon from '@material-ui/icons/Close'
-import { fetchCartItems } from '../../Redux/cartSlice'
-import { resetCart } from '../../Redux/cartSlice'
+import MenuIcon from '@material-ui/icons/Menu'
+import classNames from 'classnames'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { closeMenu, openMenu } from '../../Redux/appSlice'
+import { fetchCartItems, resetCart } from '../../Redux/cartSlice'
+import { logOut } from '../../Redux/userSlice'
+import Menu from '../Menu/Menu'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -194,7 +190,7 @@ const Header = () => {
 							<Button
 								variant="text"
 								onClick={() => {
-									navigate('/findAirport?get')
+									navigate('/findObjectInAirport')
 								}}
 								className={classNames(classes.transition, classes.marginRightFour)}
 							>
@@ -211,7 +207,7 @@ const Header = () => {
 							<Button
 								variant="text"
 								onClick={() => {
-									navigate('/findAirport?leave')
+									navigate('/leaveTextForm')
 								}}
 								className={classes.transition}
 							>

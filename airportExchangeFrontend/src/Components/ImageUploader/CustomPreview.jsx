@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-//TODO fucking CSS
-// TODO watch how it's done here https://github.com/fortana-co/react-dropzone-uploader/blob/master/src/Preview.tsx
+//maybe TODO fucking CSS
+// watch how it's done here https://github.com/fortana-co/react-dropzone-uploader/blob/master/src/Preview.tsx
 export const customPreview = (props) => {
 	const {
 		className,

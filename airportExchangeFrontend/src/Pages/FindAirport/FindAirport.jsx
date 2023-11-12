@@ -6,12 +6,9 @@ import apiCaller from '../../api/apiCaller'
 
 const FindAirport = () => {
 	const dispatch = useDispatch()
-	const getObjectsFlag = window.location.href.split('?')[1] === 'get'
-	const leaveObjectsFlag = !getObjectsFlag
-	const { searchValue, searchResult } = useSelector((state) => state.get)
+	const { searchResult } = useSelector((state) => state.get)
 	let pending = false
 
-	console.log({ searchValue, searchResult })
 
 	const handleSearch = async (value) => {
 		pending = true
@@ -23,7 +20,7 @@ const FindAirport = () => {
 		dispatch(setSearchResult({searchResult}))
 		pending = false
 	}
-
+	// TODO reuse signed url in the single object page, figure out if it's okay with the timing
 	return (
 		<>
 			<Input handleSearch={handleSearch} />

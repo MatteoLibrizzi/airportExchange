@@ -44,7 +44,7 @@ const LeaveObjects = () => {
 		<>
 			<Header />
 			{formState === 'textForm' ? (
-				<LeaveObjectFormText airportId={airportId} />
+				<LeaveObjectFormText />
 			) : formState === 'imageForm' ? (
 				<LeaveObjectFormImage />
 			) : (

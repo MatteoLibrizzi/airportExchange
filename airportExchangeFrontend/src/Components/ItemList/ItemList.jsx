@@ -38,6 +38,12 @@ const ItemList = (props) => {
 	const dispatch = useDispatch()
 	const pending = props.pending
 	const items = props.items
+	
+	const imagesByKey = {}
+	items.forEach(item => {
+		imagesByKey[item.key] = item.image
+	})
+	console.log({imagesByKey})
 	const classes = useStyles()
 
 	const navigate = useNavigate()

@@ -5,6 +5,7 @@ export const getSlice = createSlice({
 	initialState: {
 		searchValue: '',
 		searchResult: [],
+		imagesByKey: {},
 	},
 	reducers: {
 		setSearchValueGlobal: (state, action) => {
@@ -14,11 +15,14 @@ export const getSlice = createSlice({
 		setSearchResult: (state, action) => {
 			const { searchResult } = action.payload
 			state.searchResult = searchResult
+			state.searchResult.map(entry => {
+				state.imagesByKey[entry.key] = entry.image
+			})
 		},
 	},
 	extraReducers: {},
 })
 
-export const { setSearchValueGlobal, setSearchResult } = getSlice.actions
+export const { setSearchValueGlobal, setSearchResult, setImagesByKey } = getSlice.actions
 
 export default getSlice.reducer

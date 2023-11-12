@@ -20,6 +20,7 @@ import {
 	Login,
 	Shipping,
 	SignUp,
+	SingleObjectPage,
 	SingleProductPage,
 } from './Pages'
 
@@ -39,7 +40,7 @@ const App = () => {
 					}
 				/>
 				<Route
-					path='/findAirport'
+					path='/findObjectInAirport'
 					element={
 						<>
 							<Header />
@@ -57,10 +58,20 @@ const App = () => {
 					}
 				/>
 				<Route
-					path='/leaveTextForm/:airportId'
+					path='/leaveTextForm'
 					element={
 						<>
 							<LeaveObjects />
+						</>
+					}
+				/>
+				<Route
+					path='/object/:key'
+					element={
+						<>
+							<Header />
+							<SingleObjectPage />
+							<Footer />
 						</>
 					}
 				/>
