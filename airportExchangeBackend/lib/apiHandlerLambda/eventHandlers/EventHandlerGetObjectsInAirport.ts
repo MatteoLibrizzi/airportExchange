@@ -17,13 +17,13 @@ export class EventHandlerGetObjectsInAirport
 		if (!airportId) {
 			return {
 				error: 'airportId was not provided',
-				objects: []
+				objects: [],
 			}
 		}
 
-		const objectsInAirportResult = await DbHandler.getObjectsInAirport(
-			airportId
-		)
+		const objectsInAirportResult = (
+			await DbHandler.getObjectsInAirport(airportId)
+		).filter((object) => !object.pickedUp.BOOL)
 
 		const objects = await Promise.all(
 			objectsInAirportResult.map(async (result) => {
