@@ -1,6 +1,15 @@
-import { Button, Grid, Typography, alpha, makeStyles } from '@material-ui/core'
+import {
+	Box,
+	Button,
+	Grid,
+	Modal,
+	Typography,
+	alpha,
+	makeStyles,
+} from '@material-ui/core'
+import DoneAllIcon from '@mui/icons-material/DoneAll'
 import classNames from 'classnames'
-import React from 'react'
+import React, { useState } from 'react'
 import apiCaller from '../../api/apiCaller'
 
 const useStyles = makeStyles((theme) => ({
@@ -52,22 +61,79 @@ const useStyles = makeStyles((theme) => ({
 	bold: {
 		fontWeight: 'bold',
 	},
+	modal: {
+		display: 'flex',
+		flexDirection: 'column',
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: 400,
+		backgroundColor: 'white',
+		boxShadow: 24,
+		padding: '5%',
+	},
+	imageAndMessage: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	message: {
+		padding: '10px',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	messageComponent: {
+		padding: '10px',
+	},
 }))
 
 const Object = ({ item }) => {
-	console.log(item)
-	// TODO handle the case when object has been picked up
+	const [modalOpen, setModalOpen] = React.useState(false)
+	const handleOpenModal = () => setModalOpen(true)
+	const handleCloseModal = () => setModalOpen(false)
+	const [pickedUp, setPickedUp] = useState(false)
+
 	const { name, description, location, image, key, airportId } = item
 
 	const classes = useStyles()
 
-	const handleClick = async () => {
+	const handlePickUpClick = async () => {
 		await apiCaller.pickUpObject(key, airportId)
+		handleCloseModal()
+		setPickedUp(true)
 	}
 
 	return (
 		<Grid container className={classes.container}>
-			<Grid item xs={12} sm={4}>
+			<Grid
+				item
+				className={classNames(classes.imageAndMessage)}
+				xs={12}
+				sm={4}>
+				{pickedUp && (
+					<>
+						<Box className={classNames(classes.message)}>
+							<DoneAllIcon
+								color='primary'
+								className={classNames(classes.messageComponent)}
+							/>
+							<Typography
+								className={classNames(
+									classes.messageComponent
+								)}>
+								Object has been picked up
+							</Typography>
+							<DoneAllIcon
+								color='primary'
+								className={classNames(classes.messageComponent)}
+							/>
+						</Box>
+					</>
+				)}
 				<div className={classes.imgContainer}>
 					<img src={image} alt={name} className={classes.img} />
 				</div>
@@ -140,6 +206,7 @@ const Object = ({ item }) => {
 					</Grid>
 					<Grid item className={classNames(classes.textItems)}>
 						<Button
+							disabled={pickedUp}
 							className={classNames(
 								classes.letterSpace,
 								classes.marginTopTwo
@@ -147,10 +214,35 @@ const Object = ({ item }) => {
 							fullWidth
 							variant='contained'
 							color='primary'
-							// TODO write the api call to pick up the object
-							onClick={handleClick}>
+							onClick={handleOpenModal}>
 							Pick Up
 						</Button>
+						<Modal
+							open={modalOpen}
+							onClose={handleCloseModal}
+							aria-labelledby='modal-modal-title'
+							aria-describedby='modal-modal-description'>
+							<Box className={classNames(classes.modal)}>
+								<Typography
+									id='modal-modal-title'
+									variant='h6'
+									component='h2'>
+									Are you sure you want to pick up this
+									object?
+								</Typography>
+								<Button
+									className={classNames(
+										classes.letterSpace,
+										classes.marginTopTwo
+									)}
+									fullWidth
+									variant='contained'
+									color='primary'
+									onClick={handlePickUpClick}>
+									Confirm
+								</Button>
+							</Box>
+						</Modal>
 					</Grid>
 				</Grid>
 			</Grid>
