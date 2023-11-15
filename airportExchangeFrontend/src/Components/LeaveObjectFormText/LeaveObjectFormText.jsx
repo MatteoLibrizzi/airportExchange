@@ -7,10 +7,11 @@ import {
 	makeStyles,
 } from '@material-ui/core'
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { handleButtonClickInTextForm } from '../../Redux/leaveSlice'
+import Map from '../GoogleMap/GoogleMap'
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -50,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
 	letterSpace: {
 		letterSpacing: 2.5,
 	},
+	mapContainer: {
+		width: '80%',
+	},
 }))
 
 const LeaveObjectFormText = () => {
@@ -57,7 +61,7 @@ const LeaveObjectFormText = () => {
 		name: nameRedux,
 		description: descriptionRedux,
 		location: locationRedux,
-		airportId: airportIdRedux
+		airportId: airportIdRedux,
 	} = useSelector((state) => state.leave)
 
 	const navigate = useNavigate()
@@ -80,9 +84,27 @@ const LeaveObjectFormText = () => {
 		)
 		navigate('/leaveImageForm')
 	}
+
+	let userLat, userLng
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log({ position })
+                userLat = position.coords.latitude
+                userLng = position.coords.longitude
+            },
+            (err) => {
+                console.log({ err })
+            }
+        )
+	})
 	return (
 		<Grid container className={classes.container}>
-			<Grid className={classNames(classes.longItem, classes.item)} item xs={12} sm={6}>
+			<Grid
+				className={classNames(classes.longItem, classes.item)}
+				item
+				xs={12}
+				sm={6}>
 				<Typography
 					className={classNames(classes.text)}
 					color='initial'
@@ -90,7 +112,11 @@ const LeaveObjectFormText = () => {
 					Provide information on the object you are leaving
 				</Typography>
 			</Grid>
-			<Grid className={classNames(classes.shortItem,classes.item)} item xs={12} sm={6}>
+			<Grid
+				className={classNames(classes.shortItem, classes.item)}
+				item
+				xs={12}
+				sm={6}>
 				<TextField
 					classNames={classes.marginTopTwo}
 					id='outlined-basic'
@@ -103,7 +129,10 @@ const LeaveObjectFormText = () => {
 					value={name}
 				/>
 			</Grid>
-			<Grid className={classNames(classes.longItem, classes.item)} item xs={15}>
+			<Grid
+				className={classNames(classes.longItem, classes.item)}
+				item
+				xs={15}>
 				<TextField
 					className={classNames(
 						classes.paleText,
@@ -120,7 +149,10 @@ const LeaveObjectFormText = () => {
 					value={description}
 				/>
 			</Grid>
-			<Grid className={classNames(classes.longItem, classes.item)} item xs={15}>
+			<Grid
+				className={classNames(classes.longItem, classes.item)}
+				item
+				xs={15}>
 				<TextField
 					className={classNames(
 						classes.paleText,
@@ -137,9 +169,16 @@ const LeaveObjectFormText = () => {
 					value={location}
 				/>
 			</Grid>
-			<Grid className={classNames(classes.shortItem, classes.item)} item xs={15} sm={6}>
+			<Grid
+				className={classNames(classes.shortItem, classes.item)}
+				item
+				xs={15}
+				sm={6}>
 				<TextField
-					classNames={classNames(classes.paleText,classes.marginTopTwo)}
+					classNames={classNames(
+						classes.paleText,
+						classes.marginTopTwo
+					)}
 					id='outlined-basic'
 					label='Airport Code'
 					variant='outlined'
@@ -148,6 +187,21 @@ const LeaveObjectFormText = () => {
 						setAirportId(event.target.value)
 					}}
 					value={airportId}
+				/>
+			</Grid>
+			<Grid
+				className={classNames(classes.longItem, classes.item)}
+				item
+				xs={15}
+				sm={6}>
+				<Map
+					isMarkerShown
+					userLat={userLat}
+					userLng={userLng}
+					googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&places`}
+					loadingElement={<div style={{ height: '100%' }} />}
+					containerElement={<div style={{ height: '400px' }} />}
+					mapElement={<div style={{ height: '100%' }} />}
 				/>
 			</Grid>
 			<Grid className={classNames(classes.shortItem)} item xs={12} sm={6}>

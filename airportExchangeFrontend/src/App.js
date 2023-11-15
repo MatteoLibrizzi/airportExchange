@@ -5,6 +5,7 @@ import {
 	CustomSnackbar,
 	Footer,
 	Header,
+	Map,
 	PrivateRoute,
 	Redirect,
 } from './Components'
@@ -62,6 +63,26 @@ const App = () => {
 					element={
 						<>
 							<LeaveObjects />
+						</>
+					}
+				/>
+				<Route
+					path='/map'
+					element={
+						<>
+							<Header />
+							<Map
+								isMarkerShown
+								googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&places`}
+								loadingElement={
+									<div style={{ height: '100%' }} />
+								}
+								containerElement={
+									<div style={{ height: '400px' }} />
+								}
+								mapElement={<div style={{ height: '100%' }} />}
+							/>
+							<Footer />
 						</>
 					}
 				/>

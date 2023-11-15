@@ -3,6 +3,7 @@ import CartList from './CartList/CartList'
 import Categories from './Category/Categories'
 import CheckoutInfo from './CheckoutInfo/CheckoutInfo'
 import Footer from './Footer/Footer'
+import Map from './GoogleMap/GoogleMap'
 import Header from './Header/Header'
 import Hero from './Hero/Hero'
 import Uploader from './ImageUploader/ImageUploader'
@@ -25,11 +26,10 @@ export {
     Categories,
     CheckoutInfo,
     CustomSnackbar,
-    Footer,
-    Header,
+    Footer, Header,
     Hero, Input,
     ItemList, LeaveObjectFormComplete, LeaveObjectFormImage,
-    LeaveObjectFormText, Object, OrderSummary,
+    LeaveObjectFormText, Map, Object, OrderSummary,
     PrivateRoute,
     Redirect, ScrollBtn,
     SingleProduct, Uploader
