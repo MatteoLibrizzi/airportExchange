@@ -26,6 +26,7 @@ import {
 
 const App = () => {
 	const { url } = useSelector((state) => state.cart)
+	console.log(url)
 	return (
 		<>
 			<CustomSnackbar />
